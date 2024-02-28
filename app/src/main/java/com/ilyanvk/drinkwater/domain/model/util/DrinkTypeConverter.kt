@@ -1,6 +1,7 @@
-package com.ilyanvk.drinkwater.domain.model
+package com.ilyanvk.drinkwater.domain.model.util
 
 import androidx.room.TypeConverter
+import com.ilyanvk.drinkwater.domain.model.DrinkType
 
 class DrinkTypeConverter {
     @TypeConverter

@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.ilyanvk.drinkwater.domain.model.util.DrinkTypeConverter
 import java.util.UUID
 
 @Entity

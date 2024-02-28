@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ilyanvk.drinkwater.presentation.navigationbar.BottomNavigationBar
 import com.ilyanvk.drinkwater.presentation.navigationbar.BottomNavigationItems
 import com.ilyanvk.drinkwater.presentation.profile.ProfileScreen
+import com.ilyanvk.drinkwater.presentation.shop.ShopScreen
 import com.ilyanvk.drinkwater.presentation.tracker.TrackerScreen
 import com.ilyanvk.drinkwater.ui.theme.DrinkWaterTheme
 
@@ -21,17 +22,17 @@ import com.ilyanvk.drinkwater.ui.theme.DrinkWaterTheme
 fun MainScreen() {
     val navController = rememberNavController()
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+        modifier = Modifier.fillMaxSize()
     ) {
         NavHost(
             navController = navController,
             startDestination = BottomNavigationItems.Tracker.route,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             composable(BottomNavigationItems.Shop.route) {
-                Text(text = "1")
+                ShopScreen()
             }
             composable(BottomNavigationItems.Gallery.route) {
                 Text(text = "2")
