@@ -55,4 +55,8 @@
     <string name="delete">Delete</string>
     <string name="long_tap_to_delete_plant">Long tap to delete plant</string>
     <string name="plant_deleted">Plant deleted</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_plant">Delete plant?</string>
+    <string name="no_restore_warning">You will not be able to restore it.</string>
+    <string name="restore">Restore</string>
 </resources>

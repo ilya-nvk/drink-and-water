@@ -10,13 +10,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GalleryViewModel @Inject constructor() : ViewModel() {
-    private val _plants = mutableStateOf<List<Plant>>(ShopRepositoryImpl().getAllPlants())
+    private val _plants = mutableStateOf(ShopRepositoryImpl().getAllPlants())
     val plants: State<List<Plant>> = _plants
+
+    private var lastDeletedPlant: Plant? = null
 
     fun onEvent(event: GalleryScreenEvent) {
         when (event) {
-            is GalleryScreenEvent.DeletePlant -> TODO()
-            GalleryScreenEvent.RestorePlant -> TODO()
+            is GalleryScreenEvent.DeletePlant -> {
+                lastDeletedPlant = event.plant
+                // todo
+            }
+
+            GalleryScreenEvent.RestorePlant -> {
+                // todo
+            }
         }
     }
 }
