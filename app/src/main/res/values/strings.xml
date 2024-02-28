@@ -51,4 +51,8 @@
     <string name="name_price">%1$s: %2$s coins</string>
     <string name="needs_ml_to_grow">Needs %1$s ml to grow</string>
     <string name="coins">Coins</string>
+    <string name="ml">%1$s ml</string>
+    <string name="delete">Delete</string>
+    <string name="long_tap_to_delete_plant">Long tap to delete plant</string>
+    <string name="plant_deleted">Plant deleted</string>
 </resources>

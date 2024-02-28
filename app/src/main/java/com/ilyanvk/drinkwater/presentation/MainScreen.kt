@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.ilyanvk.drinkwater.presentation.gallery.GalleryScreen
 import com.ilyanvk.drinkwater.presentation.navigationbar.BottomNavigationBar
 import com.ilyanvk.drinkwater.presentation.navigationbar.BottomNavigationItems
 import com.ilyanvk.drinkwater.presentation.profile.ProfileScreen
@@ -35,13 +36,13 @@ fun MainScreen() {
                 ShopScreen()
             }
             composable(BottomNavigationItems.Gallery.route) {
-                Text(text = "2")
+                GalleryScreen()
             }
             composable(BottomNavigationItems.Tracker.route) {
-                TrackerScreen(modifier = Modifier.fillMaxSize())
+                TrackerScreen()
             }
             composable(BottomNavigationItems.Profile.route) {
-                ProfileScreen(modifier = Modifier.fillMaxSize())
+                ProfileScreen()
             }
             composable(BottomNavigationItems.Settings.route) {
                 Text(text = "5")
