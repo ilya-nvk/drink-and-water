@@ -19,4 +19,12 @@
     <string name="juice">Juice</string>
     <string name="milk">Milk</string>
     <string name="alcohol">Alcohol</string>
+    <string name="name">Name</string>
+    <string name="weight">Weight, kg</string>
+    <string name="height">Height, cm</string>
+    <string name="birth_date">Birth date</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="reset_progress">Reset progress</string>
+    <string name="save">Save</string>
 </resources>

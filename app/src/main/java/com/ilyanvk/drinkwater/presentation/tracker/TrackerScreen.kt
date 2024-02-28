@@ -15,10 +15,10 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -37,15 +37,17 @@ import com.ilyanvk.drinkwater.presentation.tracker.components.RecordComponent
 @Preview
 @Composable
 fun TrackerScreen(
-    modifier: Modifier = Modifier, viewModel: TrackerViewModel = hiltViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: TrackerViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
     Scaffold(modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
-        TopAppBar(
+        LargeTopAppBar(
             title = {
                 Text(
-                    text = "Tracker", style = MaterialTheme.typography.displayMedium
+                    text = stringResource(id = R.string.tracker),
+                    style = MaterialTheme.typography.displayMedium
                 )
             }, scrollBehavior = scrollBehavior
         )
