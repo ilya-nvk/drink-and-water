@@ -1,8 +1,12 @@
 package com.ilyanvk.drinkwater.presentation.navigationbar
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.ilyanvk.drinkwater.R
 
-sealed class BottomNavigationItems(var route: String, var iconId: Int, var titleId: Int) {
+sealed class BottomNavigationItems(
+    var route: String, @DrawableRes var iconId: Int, @StringRes var titleId: Int
+) {
     data object Shop :
         BottomNavigationItems("shop", R.drawable.outline_storefront_24, R.string.shop)
 
