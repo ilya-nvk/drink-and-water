@@ -59,4 +59,11 @@
     <string name="delete_plant">Delete plant?</string>
     <string name="no_restore_warning">You will not be able to restore it.</string>
     <string name="restore">Restore</string>
+    <string name="theme">Theme</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="notifications">Notifications</string>
+    <string name="add_notification">Add notification</string>
+    <string name="add">Add</string>
 </resources>

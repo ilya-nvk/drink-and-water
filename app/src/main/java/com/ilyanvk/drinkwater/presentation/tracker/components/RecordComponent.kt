@@ -12,8 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.ilyanvk.drinkwater.R
 import com.ilyanvk.drinkwater.domain.model.DrinkType
 import com.ilyanvk.drinkwater.domain.model.IntakeRecord
-import java.text.SimpleDateFormat
-import java.util.Date
+import com.ilyanvk.drinkwater.presentation.util.convertMillisecondsToTimestamp
 
 @Composable
 fun RecordComponent(
@@ -42,10 +41,4 @@ fun RecordComponent(
             text = timeString, style = MaterialTheme.typography.bodySmall
         )
     }
-}
-
-private fun convertMillisecondsToTimestamp(milliseconds: Long): String {
-    val sdf = SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
-    val date = Date(milliseconds)
-    return sdf.format(date)
 }

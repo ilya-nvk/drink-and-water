@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,6 +14,7 @@ import com.ilyanvk.drinkwater.presentation.gallery.GalleryScreen
 import com.ilyanvk.drinkwater.presentation.navigationbar.BottomNavigationBar
 import com.ilyanvk.drinkwater.presentation.navigationbar.BottomNavigationItems
 import com.ilyanvk.drinkwater.presentation.profile.ProfileScreen
+import com.ilyanvk.drinkwater.presentation.settings.SettingsScreen
 import com.ilyanvk.drinkwater.presentation.shop.ShopScreen
 import com.ilyanvk.drinkwater.presentation.tracker.TrackerScreen
 import com.ilyanvk.drinkwater.ui.theme.DrinkWaterTheme
@@ -45,7 +45,7 @@ fun MainScreen() {
                 ProfileScreen()
             }
             composable(BottomNavigationItems.Settings.route) {
-                Text(text = "5")
+                SettingsScreen()
             }
         }
 
