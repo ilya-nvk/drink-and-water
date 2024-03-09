@@ -4,8 +4,10 @@ import android.content.Context
 import com.ilyanvk.drinkwater.domain.model.Sex
 import com.ilyanvk.drinkwater.domain.model.UserProfile
 
-class UserProfileSharedPreferencesImpl : UserProfileSharedPreferences {
-    override fun saveUserProfile(context: Context, userProfile: UserProfile) {
+class UserProfileSharedPreferencesImpl(
+    private val context: Context
+) : UserProfileSharedPreferences {
+    override fun saveUserProfile(userProfile: UserProfile) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         with(prefs.edit()) {
             putString(KEY_NAME, userProfile.name)
@@ -17,7 +19,7 @@ class UserProfileSharedPreferencesImpl : UserProfileSharedPreferences {
         }
     }
 
-    override fun getUserProfile(context: Context): UserProfile {
+    override fun getUserProfile(): UserProfile {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return UserProfile(
             prefs.getString(KEY_NAME, "") ?: "",

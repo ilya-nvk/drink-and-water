@@ -1,30 +1,71 @@
 package com.ilyanvk.drinkwater.presentation.shop
 
-import androidx.compose.runtime.IntState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.ilyanvk.drinkwater.domain.model.Plant
+import androidx.lifecycle.viewModelScope
+import com.ilyanvk.drinkwater.domain.repository.coins.CoinsRepository
+import com.ilyanvk.drinkwater.domain.repository.plants.GalleryRepository
 import com.ilyanvk.drinkwater.domain.repository.plants.ShopRepository
-import com.ilyanvk.drinkwater.domain.repository.plants.ShopRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class ShopViewModel @Inject constructor() : ViewModel() {
-    private val shopRepository: ShopRepository = ShopRepositoryImpl()
+class ShopViewModel @Inject constructor(
+    private val coinsRepository: CoinsRepository,
+    private val galleryRepository: GalleryRepository,
+    shopRepository: ShopRepository
+) : ViewModel() {
 
-    private val _coins = mutableIntStateOf(10)
-    val coins: IntState = _coins
+    private val _state = mutableStateOf(
+        ShopScreenState(
+            coins = coinsRepository.getCoins(), plants = shopRepository.getAllPlants()
+        )
+    )
+    val state: State<ShopScreenState> = _state
 
-    private val _plants = mutableStateOf(shopRepository.getAllPlants())
-    val plants: State<List<Plant>> = _plants
+    init {
+        galleryRepository.getGrownPlants().launchIn(viewModelScope)
+    }
 
     fun onEvent(event: ShopScreenEvent) {
         when (event) {
             is ShopScreenEvent.BuyPlant -> {
-                TODO()
+                val plant = event.plant
+                val coins = _state.value.coins
+                if (coins >= plant.price) {
+                    coinsRepository.removeCoins(plant.price)
+                    _state.value = _state.value.copy(coins = coinsRepository.getCoins())
+                    viewModelScope.launch(Dispatchers.IO) {
+                        galleryRepository.addGrownPlant(
+                            plant.copy(
+                                id = UUID.randomUUID().toString()
+                            )
+                        )
+                    }
+                } else {
+                    throw Exception()
+                }
+            }
+
+            ShopScreenEvent.ShowCoinsDialog -> {
+                _state.value = _state.value.copy(showCoinsDialog = true)
+            }
+
+            ShopScreenEvent.HideCoinsDialog -> {
+                _state.value = _state.value.copy(showCoinsDialog = false)
+            }
+
+            is ShopScreenEvent.ShowBuyPlantDialog -> {
+                _state.value = _state.value.copy(buyPlantDialog = event.plant)
+            }
+
+            ShopScreenEvent.HideBuyPlantDialog -> {
+                _state.value = _state.value.copy(buyPlantDialog = null)
             }
         }
     }

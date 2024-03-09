@@ -16,8 +16,22 @@ data class Plant(
     @DrawableRes val pictureId2: Int,
     @DrawableRes val pictureId3: Int,
     @DrawableRes val pictureId4: Int,
-    @PrimaryKey val id: String = UUID.randomUUID().toString()
+    @PrimaryKey val id: String = UUID.randomUUID().toString(),
+    val tookWater: Int = 0
 ) {
     @Ignore
     val totalWater = waterPerLevel * 3
+
+    @Ignore
+    val level = tookWater / waterPerLevel
+
+    @DrawableRes
+    fun getCurrentLevelPictureId(): Int {
+        return when (level) {
+            0 -> pictureId1
+            1 -> pictureId2
+            2 -> pictureId3
+            else -> pictureId4
+        }
+    }
 }

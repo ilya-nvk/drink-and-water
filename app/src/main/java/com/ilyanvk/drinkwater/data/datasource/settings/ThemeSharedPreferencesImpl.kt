@@ -3,8 +3,10 @@ package com.ilyanvk.drinkwater.data.datasource.settings
 import android.content.Context
 import com.ilyanvk.drinkwater.domain.model.Theme
 
-class SettingsSharedPreferencesImpl : SettingsSharedPreferences {
-    override fun setTheme(context: Context, theme: Theme) {
+class ThemeSharedPreferencesImpl(
+    private val context: Context
+) : ThemeSharedPreferences {
+    override fun setTheme(theme: Theme) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         with(prefs.edit()) {
             putInt(THEME_KEY, theme.ordinal)
@@ -12,7 +14,7 @@ class SettingsSharedPreferencesImpl : SettingsSharedPreferences {
         }
     }
 
-    override fun getTheme(context: Context): Theme {
+    override fun getTheme(): Theme {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val themeOrdinal = prefs.getInt(THEME_KEY, Theme.SYSTEM.ordinal)
         return Theme.entries[themeOrdinal]

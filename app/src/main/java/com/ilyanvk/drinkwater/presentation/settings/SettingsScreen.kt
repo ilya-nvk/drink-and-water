@@ -30,10 +30,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -53,12 +49,11 @@ fun SettingsScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
-    var showTimePicker by remember { mutableStateOf(false) }
     val timePickerState = rememberTimePickerState()
 
-    if (showTimePicker) {
+    if (viewModel.state.value.showTimePickerDialog) {
         TimePickerDialog(
-            onDismissRequest = { showTimePicker = false },
+            onDismissRequest = { viewModel.onEvent(SettingsEvent.ShowTimePickerDialog) },
             confirmButton = {
                 Button(onClick = {
                     viewModel.onEvent(
@@ -66,16 +61,17 @@ fun SettingsScreen(
                             (timePickerState.hour * 60 * 60 * 1000 + timePickerState.minute * 60 * 1000).toLong()
                         )
                     )
-                    showTimePicker = false
+                    viewModel.onEvent(SettingsEvent.HideTimePickerDialog)
                 }) {
                     Text(text = stringResource(id = R.string.add))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showTimePicker = false }) {
+                TextButton(onClick = { viewModel.onEvent(SettingsEvent.HideTimePickerDialog) }) {
                     Text(text = stringResource(id = R.string.cancel))
                 }
             },
+            title = stringResource(R.string.select_time)
         ) {
             TimePicker(state = timePickerState)
         }
@@ -179,7 +175,7 @@ fun SettingsScreen(
             }
             item {
                 ListItem(modifier = Modifier.clickable {
-                    showTimePicker = true
+                    viewModel.onEvent(SettingsEvent.ShowTimePickerDialog)
                 },
                     headlineContent = { Text(text = stringResource(R.string.add_notification)) },
                     leadingContent = {

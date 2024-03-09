@@ -1,15 +1,20 @@
 package com.ilyanvk.drinkwater.presentation.profile
 
 import com.ilyanvk.drinkwater.domain.model.Sex
-import com.ilyanvk.drinkwater.domain.model.UserProfile
 
 data class ProfileScreenState(
-    val name: String, val dateOfBirth: Long, val height: String, val weight: String, val sex: Sex
+    val name: String,
+    val dateOfBirth: Long,
+    val height: String,
+    val weight: String,
+    val sex: Sex,
+    val showDatePickerDialog: Boolean = false
 ) {
     fun isNameCorrect(): Boolean = name.isNotEmpty()
 
     fun isDateOfBirthCorrect(): Boolean {
-        return (System.currentTimeMillis() - dateOfBirth) in (YEAR_IN_MILLISECONDS * 1)..(YEAR_IN_MILLISECONDS * 150)
+        val yearInMilliseconds = 31536000000
+        return (System.currentTimeMillis() - dateOfBirth) in (yearInMilliseconds * 1)..(yearInMilliseconds * 150)
     }
 
     fun isHeightCorrect(): Boolean {
@@ -30,23 +35,7 @@ data class ProfileScreenState(
         }
     }
 
-    @Throws(IllegalArgumentException::class)
-    fun toUserProfile(): UserProfile {
-        require(isNameCorrect() && isDateOfBirthCorrect() && isWeightCorrect() && isHeightCorrect())
-        return UserProfile(name, dateOfBirth, height.toInt(), weight.toDouble(), sex)
-    }
-
-    companion object {
-        fun fromUserProfile(userProfile: UserProfile): ProfileScreenState {
-            return ProfileScreenState(
-                userProfile.name,
-                userProfile.dateOfBirth,
-                userProfile.height.toString(),
-                userProfile.weight.toString(),
-                userProfile.sex
-            )
-        }
-
-        private const val YEAR_IN_MILLISECONDS = 31536000000
+    fun isProfileCorrect(): Boolean {
+        return isNameCorrect() && isDateOfBirthCorrect() && isHeightCorrect() && isWeightCorrect()
     }
 }

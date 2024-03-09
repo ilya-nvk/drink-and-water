@@ -5,13 +5,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.ilyanvk.drinkwater.domain.model.Sex
 import com.ilyanvk.drinkwater.domain.model.UserProfile
+import com.ilyanvk.drinkwater.domain.repository.userprofile.UserProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor() : ViewModel() {
-    private val _state = mutableStateOf<ProfileScreenState>(
-        ProfileScreenState.fromUserProfile(
+class ProfileViewModel @Inject constructor(
+    private val userProfileRepository: UserProfileRepository
+) : ViewModel() {
+    private val _state = mutableStateOf(
+        userProfileToState(
             UserProfile(
                 "Ilya", 1112558400000, 182, 55.0, Sex.MALE
             )
@@ -19,27 +22,75 @@ class ProfileViewModel @Inject constructor() : ViewModel() {
     )
     val state: State<ProfileScreenState> = _state
 
+    init {
+        getProfile()
+    }
+
     fun onEvent(event: ProfileScreenEvent) {
         when (event) {
-            is ProfileScreenEvent.ChangeDateOfBirth -> {
+            is ProfileScreenEvent.UpdateDateOfBirth -> {
                 _state.value = _state.value.copy(dateOfBirth = event.dateOfBirth)
             }
 
-            is ProfileScreenEvent.ChangeHeight -> {
+            is ProfileScreenEvent.UpdateHeight -> {
                 _state.value = _state.value.copy(height = event.height)
             }
 
-            is ProfileScreenEvent.ChangeName -> {
+            is ProfileScreenEvent.UpdateName -> {
                 _state.value = _state.value.copy(name = event.name)
             }
 
-            is ProfileScreenEvent.ChangeSex -> {
+            is ProfileScreenEvent.UpdateSex -> {
                 _state.value = _state.value.copy(sex = event.sex)
             }
 
-            is ProfileScreenEvent.ChangeWeight -> {
+            is ProfileScreenEvent.UpdateWeight -> {
                 _state.value = _state.value.copy(weight = event.weight)
             }
+
+            ProfileScreenEvent.ResetProgress -> {
+
+            }
+
+            ProfileScreenEvent.SaveProfile -> {
+                userProfileRepository.saveUserProfile(stateToUserProfile())
+                getProfile()
+            }
+
+            ProfileScreenEvent.ShowDatePickerDialog -> {
+                _state.value = _state.value.copy(showDatePickerDialog = true)
+            }
+
+            ProfileScreenEvent.HideDatePickerDialog -> {
+                _state.value = _state.value.copy(showDatePickerDialog = false)
+            }
         }
+    }
+
+    private fun getProfile() {
+        val userProfile = userProfileRepository.getUserProfile()
+        _state.value = userProfileToState(userProfile)
+    }
+
+    @Throws(IllegalArgumentException::class)
+    private fun stateToUserProfile(): UserProfile {
+        require(_state.value.isNameCorrect() && _state.value.isDateOfBirthCorrect() && _state.value.isWeightCorrect() && _state.value.isHeightCorrect())
+        return UserProfile(
+            _state.value.name,
+            _state.value.dateOfBirth,
+            _state.value.height.toInt(),
+            _state.value.weight.toDouble(),
+            _state.value.sex
+        )
+    }
+
+    private fun userProfileToState(userProfile: UserProfile): ProfileScreenState {
+        return ProfileScreenState(
+            userProfile.name,
+            userProfile.dateOfBirth,
+            userProfile.height.toString(),
+            userProfile.weight.toString(),
+            userProfile.sex
+        )
     }
 }

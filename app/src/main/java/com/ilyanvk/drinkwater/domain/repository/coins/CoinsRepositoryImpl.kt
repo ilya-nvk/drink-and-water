@@ -1,22 +1,20 @@
 package com.ilyanvk.drinkwater.domain.repository.coins
 
-import android.content.Context
 import com.ilyanvk.drinkwater.data.datasource.coins.CoinsSharedPreferences
 
 class CoinsRepositoryImpl(
-    private val coinsSharedPreferences: CoinsSharedPreferences,
-    private val context: Context
+    private val coinsSharedPreferences: CoinsSharedPreferences
 ) : CoinsRepository {
-    override fun getCoins(): Int = coinsSharedPreferences.getCoins(context)
+    override fun getCoins(): Int = coinsSharedPreferences.getCoins()
 
     override fun addCoins(coins: Int) {
-        val newCoins = coins + coinsSharedPreferences.getCoins(context)
-        coinsSharedPreferences.setCoins(context, newCoins)
+        val newCoins = coins + coinsSharedPreferences.getCoins()
+        coinsSharedPreferences.setCoins(newCoins)
     }
 
     override fun removeCoins(coins: Int) = addCoins(-coins)
 
-    override fun setCoins(coins: Int) = coinsSharedPreferences.setCoins(context, coins)
+    override fun setCoins(coins: Int) = coinsSharedPreferences.setCoins(coins)
 
-    override fun resetCoins() = coinsSharedPreferences.setCoins(context, 0)
+    override fun resetCoins() = coinsSharedPreferences.setCoins(0)
 }

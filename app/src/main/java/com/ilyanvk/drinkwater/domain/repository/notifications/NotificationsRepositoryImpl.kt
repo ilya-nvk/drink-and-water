@@ -20,7 +20,7 @@ class NotificationsRepositoryImpl(
     }
 
     override suspend fun updateNotification(notification: Notification) {
-        // todo
+        dao.insertNotification(notification)
     }
 
     override suspend fun deleteNotification(notification: Notification) {

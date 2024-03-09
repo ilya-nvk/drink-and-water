@@ -33,7 +33,7 @@ fun TimePickerDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
             usePlatformDefaultWidth = false
-        ),
+        )
     ) {
         Surface(
             shape = MaterialTheme.shapes.extraLarge,

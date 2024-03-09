@@ -2,8 +2,10 @@ package com.ilyanvk.drinkwater.data.datasource.lastlogin
 
 import android.content.Context
 
-class LastLoginSharedPreferencesImpl : LastLoginSharedPreferences {
-    override fun saveLastLoginTime(context: Context, time: Long) {
+class LastLoginSharedPreferencesImpl(
+    private val context: Context
+) : LastLoginSharedPreferences {
+    override fun saveLastLoginTime(time: Long) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         with(prefs.edit()) {
             putLong(KEY_LAST_LOGIN_TIME, time)
@@ -11,7 +13,7 @@ class LastLoginSharedPreferencesImpl : LastLoginSharedPreferences {
         }
     }
 
-    override fun getLastLoginTime(context: Context): Long {
+    override fun getLastLoginTime(): Long {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return prefs.getLong(KEY_LAST_LOGIN_TIME, 0)
     }

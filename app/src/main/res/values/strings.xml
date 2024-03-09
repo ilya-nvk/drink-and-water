@@ -56,8 +56,8 @@
     <string name="long_tap_to_delete_plant">Long tap to delete plant</string>
     <string name="plant_deleted">Plant deleted</string>
     <string name="cancel">Cancel</string>
-    <string name="delete_plant">Delete plant?</string>
-    <string name="no_restore_warning">You will not be able to restore it.</string>
+    <string name="delete_plant_question">Delete plant?</string>
+    <string name="no_restore_warning">You will not be able to restore it</string>
     <string name="restore">Restore</string>
     <string name="theme">Theme</string>
     <string name="theme_dark">Dark</string>
@@ -66,4 +66,25 @@
     <string name="notifications">Notifications</string>
     <string name="add_notification">Add notification</string>
     <string name="add">Add</string>
+    <string name="ok">OK</string>
+    <string name="coins_description">You can get 1 coin every day for entering the app. You can also get 1 more coin for meeting your daily drinking requirement and 5 coins for growing a plant completely. For coins you can buy a plant</string>
+    <string name="you_have_coins">You have %1$s coins</string>
+    <string name="save_profile_error">Please fill in all fields correctly</string>
+    <string name="save_profile_success">Profile successfully saved</string>
+    <string name="progress_reset_success">Progress successfully reset</string>
+    <string name="long_tap_to_delete_record">Long tap to delete record</string>
+    <string name="record_deleted">Record deleted</string>
+    <string name="water_equivalent_text">%1$s ml of %2$s = %3$s ml of water</string>
+    <string name="select_time">Select time</string>
+    <string name="ml_of_water">%1$s ml of water</string>
+    <string name="delete_record_question">Delete record?</string>
+    <string name="buy">Buy</string>
+    <string name="buy_plant_question">Buy plant?</string>
+    <string name="costs_coins">%1$s costs %2$s coins</string>
+    <string name="you_bought_a_plant">You bought a plant</string>
+    <string name="not_enough_coins">Not enough coins</string>
+    <string name="plant_grown_dialog">Your plant is grown. Now you can see it in gallery. You need to buy new plant to continue</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="select_birth_date">Select birth date</string>
+    <string name="you_need_to_buy_a_plant">You need to buy a plant</string>
 </resources>
