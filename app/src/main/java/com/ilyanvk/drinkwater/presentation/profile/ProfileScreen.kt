@@ -51,6 +51,8 @@ import java.util.Locale
 fun ProfileScreen(
     modifier: Modifier = Modifier, viewModel: ProfileViewModel = hiltViewModel()
 ) {
+    viewModel.updateData()
+
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val saveErrorMessage = stringResource(R.string.save_profile_error)

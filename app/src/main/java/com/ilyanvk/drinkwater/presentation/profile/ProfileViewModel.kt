@@ -23,7 +23,12 @@ class ProfileViewModel @Inject constructor(
     val state: State<ProfileScreenState> = _state
 
     init {
-        getProfile()
+        updateData()
+    }
+
+    fun updateData() {
+        val userProfile = userProfileRepository.getUserProfile()
+        _state.value = userProfileToState(userProfile)
     }
 
     fun onEvent(event: ProfileScreenEvent) {
@@ -54,7 +59,7 @@ class ProfileViewModel @Inject constructor(
 
             ProfileScreenEvent.SaveProfile -> {
                 userProfileRepository.saveUserProfile(stateToUserProfile())
-                getProfile()
+                updateData()
             }
 
             ProfileScreenEvent.ShowDatePickerDialog -> {
@@ -65,11 +70,6 @@ class ProfileViewModel @Inject constructor(
                 _state.value = _state.value.copy(showDatePickerDialog = false)
             }
         }
-    }
-
-    private fun getProfile() {
-        val userProfile = userProfileRepository.getUserProfile()
-        _state.value = userProfileToState(userProfile)
     }
 
     @Throws(IllegalArgumentException::class)

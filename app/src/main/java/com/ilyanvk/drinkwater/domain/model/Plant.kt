@@ -27,7 +27,8 @@ data class Plant(
 
     @DrawableRes
     fun getCurrentLevelPictureId(): Int {
-        return when (level) {
+        return pictureId4
+        when (level) {
             0 -> pictureId1
             1 -> pictureId2
             2 -> pictureId3

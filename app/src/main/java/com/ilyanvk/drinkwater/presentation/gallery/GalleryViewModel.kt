@@ -23,6 +23,10 @@ class GalleryViewModel @Inject constructor(
     private var lastDeletedPlants = mutableListOf<Plant>()
 
     init {
+        updateData()
+    }
+
+    fun updateData() {
         repository.getGrownPlants().onEach { plants ->
             _state.value = _state.value.copy(plants = plants)
         }.launchIn(viewModelScope)

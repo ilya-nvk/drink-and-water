@@ -11,7 +11,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,11 +40,7 @@ class ShopViewModel @Inject constructor(
                     coinsRepository.removeCoins(plant.price)
                     _state.value = _state.value.copy(coins = coinsRepository.getCoins())
                     viewModelScope.launch(Dispatchers.IO) {
-                        galleryRepository.addGrownPlant(
-                            plant.copy(
-                                id = UUID.randomUUID().toString()
-                            )
-                        )
+                        galleryRepository.setCurrentPlant(plant)
                     }
                 } else {
                     throw Exception()

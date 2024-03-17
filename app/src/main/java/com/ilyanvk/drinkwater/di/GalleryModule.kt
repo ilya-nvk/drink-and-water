@@ -2,6 +2,8 @@ package com.ilyanvk.drinkwater.di
 
 import android.content.Context
 import androidx.room.Room
+import com.ilyanvk.drinkwater.data.datasource.plants.CurrentPlantSharedPreferences
+import com.ilyanvk.drinkwater.data.datasource.plants.CurrentPlantSharedPreferencesImpl
 import com.ilyanvk.drinkwater.data.datasource.plants.GalleryDao
 import com.ilyanvk.drinkwater.data.datasource.plants.GalleryDatabase
 import com.ilyanvk.drinkwater.domain.repository.plants.GalleryRepository
@@ -25,5 +27,12 @@ class GalleryModule {
     }
 
     @Provides
-    fun provideGalleryRepository(dao: GalleryDao): GalleryRepository = GalleryRepositoryImpl(dao)
+    fun provideCurrentPlantSharedPreferences(
+        @ApplicationContext context: Context
+    ): CurrentPlantSharedPreferences = CurrentPlantSharedPreferencesImpl(context)
+
+    @Provides
+    fun provideGalleryRepository(
+        dao: GalleryDao, currentPlantSharedPreferences: CurrentPlantSharedPreferences
+    ): GalleryRepository = GalleryRepositoryImpl(dao, currentPlantSharedPreferences)
 }
