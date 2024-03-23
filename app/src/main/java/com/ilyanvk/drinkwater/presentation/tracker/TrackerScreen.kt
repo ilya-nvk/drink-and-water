@@ -54,7 +54,7 @@ import kotlinx.coroutines.launch
 fun TrackerScreen(
     modifier: Modifier = Modifier, viewModel: TrackerViewModel = hiltViewModel()
 ) {
-    viewModel.updateData()
+    viewModel.updateGrowingPlant()
     val state = viewModel.state.value
 
     val snackbarHostState = remember { SnackbarHostState() }

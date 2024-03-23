@@ -51,7 +51,7 @@ import java.util.Locale
 fun ProfileScreen(
     modifier: Modifier = Modifier, viewModel: ProfileViewModel = hiltViewModel()
 ) {
-    viewModel.updateData()
+    //viewModel.updateData()
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()

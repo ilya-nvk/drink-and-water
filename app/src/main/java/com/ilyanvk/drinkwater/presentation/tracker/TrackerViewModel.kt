@@ -28,10 +28,13 @@ class TrackerViewModel @Inject constructor(
     private val _state = mutableStateOf(TrackerScreenState())
     val state: State<TrackerScreenState> = _state
 
-    fun updateData() {
+    init {
         intakeRecordRepository.getIntakeRecords().onEach {
             _state.value = _state.value.copy(records = it)
         }.launchIn(viewModelScope)
+    }
+
+    fun updateGrowingPlant() {
         viewModelScope.launch(Dispatchers.IO) {
             val plant = galleryRepository.getCurrentPlant()
             Log.d("TrackerViewModel", "plant: $plant")
