@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ilyanvk.drinkwater.domain.model.IntakeRecord
 import com.ilyanvk.drinkwater.domain.model.UserProfile
+import com.ilyanvk.drinkwater.domain.repository.coins.CoinsRepository
 import com.ilyanvk.drinkwater.domain.repository.intakerecord.IntakeRecordRepository
 import com.ilyanvk.drinkwater.domain.repository.plants.GalleryRepository
 import com.ilyanvk.drinkwater.domain.repository.userprofile.UserProfileRepository
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class TrackerViewModel @Inject constructor(
     private val intakeRecordRepository: IntakeRecordRepository,
     private val profileRepository: UserProfileRepository,
-    private val galleryRepository: GalleryRepository
+    private val galleryRepository: GalleryRepository,
+    private val coinsRepository: CoinsRepository
 ) : ViewModel() {
 
     private val _state = mutableStateOf(TrackerScreenState())
@@ -58,6 +60,19 @@ class TrackerViewModel @Inject constructor(
                 _state.value = _state.value.copy(
                     records = _state.value.records + newRecord
                 )
+                viewModelScope.launch(Dispatchers.IO) {
+                    val currentPlant = galleryRepository.getCurrentPlant()
+                    currentPlant?.let { galleryRepository.setCurrentPlant(it.copy(tookWater = it.tookWater + newRecord.actualIntakeMilliliters)) }
+                    if (_state.value.intakeToday >= _state.value.intakeTodayGoal) {
+                        coinsRepository.addCoins(1)
+                    }
+                    if (_state.value.intakeGrow >= _state.value.intakeGrowGoal) {
+                        coinsRepository.addCoins(5)
+                        galleryRepository.getCurrentPlant()
+                            ?.let { galleryRepository.addGrownPlant(it) }
+                        galleryRepository.deleteCurrentPlant()
+                    }
+                }
             }
 
             is TrackerScreenEvent.DeleteRecord -> {

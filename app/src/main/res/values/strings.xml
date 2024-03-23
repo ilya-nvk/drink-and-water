@@ -87,4 +87,5 @@
     <string name="congratulations">Congratulations!</string>
     <string name="select_birth_date">Select birth date</string>
     <string name="you_need_to_buy_a_plant">You need to buy a plant</string>
+    <string name="you_need_to_buy_a_new_plant_to_continue">You need to buy a new plant to continue</string>
 </resources>

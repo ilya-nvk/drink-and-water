@@ -61,6 +61,7 @@ fun TrackerScreen(
     val coroutineScope = rememberCoroutineScope()
     val singleTapMessage = stringResource(R.string.long_tap_to_delete_record)
     val plantDeletedMessage = stringResource(R.string.record_deleted)
+    val noCurrentPlantError = stringResource(R.string.you_need_to_buy_a_new_plant_to_continue)
 
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
@@ -99,7 +100,15 @@ fun TrackerScreen(
         ExtendedFloatingActionButton(
             text = { Text(text = stringResource(id = R.string.new_record)) },
             icon = { Icon(imageVector = Icons.Outlined.Add, contentDescription = null) },
-            onClick = { showNewRecordDialog = true },
+            onClick = {
+                if (state.plant != null) {
+                    showNewRecordDialog = true
+                } else {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(message = noCurrentPlantError)
+                    }
+                }
+            },
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer
         )
