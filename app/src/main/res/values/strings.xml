@@ -88,4 +88,7 @@
     <string name="select_birth_date">Select birth date</string>
     <string name="you_need_to_buy_a_plant">You need to buy a plant</string>
     <string name="you_need_to_buy_a_new_plant_to_continue">You need to buy a new plant to continue</string>
+    <string name="notification_channel_name">Drink reminders</string>
+    <string name="notification_title">Drink some water</string>
+    <string name="you_asked_to_remind_you">You asked to remind you</string>
 </resources>

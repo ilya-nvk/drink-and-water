@@ -1,10 +1,13 @@
 package com.ilyanvk.drinkwater.presentation
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.core.app.ActivityCompat
 import com.ilyanvk.drinkwater.domain.model.Theme
 import com.ilyanvk.drinkwater.domain.repository.settings.ThemeRepository
 import com.ilyanvk.drinkwater.ui.theme.DrinkWaterTheme
@@ -21,7 +24,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-
         themeRepository.getTheme().observe(this) { theme ->
             setContent {
                 DrinkWaterTheme(
@@ -35,6 +37,18 @@ class MainActivity : ComponentActivity() {
                     MainScreen()
                 }
             }
+        }
+
+        requestNotificationPermission()
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                1
+            )
         }
     }
 }

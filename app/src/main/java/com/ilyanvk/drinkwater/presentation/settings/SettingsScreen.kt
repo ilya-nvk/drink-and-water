@@ -40,6 +40,7 @@ import com.ilyanvk.drinkwater.R
 import com.ilyanvk.drinkwater.domain.model.Theme
 import com.ilyanvk.drinkwater.presentation.settings.components.TimePickerDialog
 import com.ilyanvk.drinkwater.presentation.util.convertMillisecondsToTimestamp
+import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -155,7 +156,7 @@ fun SettingsScreen(
                 }, headlineContent = {
                     Text(
                         text = convertMillisecondsToTimestamp(
-                            notification.time
+                            notification.time - TimeZone.getDefault().rawOffset
                         )
                     )
                 }, trailingContent = {

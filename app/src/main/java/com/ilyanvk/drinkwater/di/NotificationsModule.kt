@@ -6,6 +6,8 @@ import com.ilyanvk.drinkwater.data.datasource.notifications.NotificationsDao
 import com.ilyanvk.drinkwater.data.datasource.notifications.NotificationsDatabase
 import com.ilyanvk.drinkwater.domain.repository.notifications.NotificationsRepository
 import com.ilyanvk.drinkwater.domain.repository.notifications.NotificationsRepositoryImpl
+import com.ilyanvk.drinkwater.presentation.notifications.DrinkNotificationManager
+import com.ilyanvk.drinkwater.presentation.notifications.DrinkNotificationManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,4 +29,8 @@ class NotificationsModule {
     @Provides
     fun provideNotificationsRepository(dao: NotificationsDao): NotificationsRepository =
         NotificationsRepositoryImpl(dao)
+
+    @Provides
+    fun provideDrinkNotificationManager(@ApplicationContext context: Context): DrinkNotificationManager =
+        DrinkNotificationManagerImpl(context)
 }
