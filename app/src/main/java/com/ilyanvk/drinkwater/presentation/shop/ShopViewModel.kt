@@ -43,7 +43,7 @@ class ShopViewModel @Inject constructor(
                         galleryRepository.setCurrentPlant(plant)
                     }
                 } else {
-                    throw Exception()
+                    throw NotEnoughCoinsException()
                 }
             }
 
@@ -56,6 +56,9 @@ class ShopViewModel @Inject constructor(
             }
 
             is ShopScreenEvent.ShowBuyPlantDialog -> {
+                if (galleryRepository.getCurrentPlantId() != null) {
+                    throw CurrentlyGrowingPlantException()
+                }
                 _state.value = _state.value.copy(buyPlantDialog = event.plant)
             }
 

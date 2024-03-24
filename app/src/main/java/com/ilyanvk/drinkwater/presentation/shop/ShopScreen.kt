@@ -48,6 +48,7 @@ fun ShopScreen(
     val coroutineScope = rememberCoroutineScope()
     val plantBoughtMessage = stringResource(R.string.you_bought_a_plant)
     val notEnoughCoinsMessage = stringResource(R.string.not_enough_coins)
+    val currentlyGrowingPlantMessage = stringResource(R.string.you_already_have_a_growing_plant)
 
     if (viewModel.state.value.showCoinsDialog) {
         CoinsDialog(
@@ -68,7 +69,7 @@ fun ShopScreen(
                     coroutineScope.launch {
                         snackbarHostState.showSnackbar(message = plantBoughtMessage)
                     }
-                } catch (_: Exception) {
+                } catch (_: NotEnoughCoinsException) {
                     coroutineScope.launch {
                         snackbarHostState.showSnackbar(message = notEnoughCoinsMessage)
                     }
@@ -121,7 +122,13 @@ fun ShopScreen(
                     price = plant.price,
                     waterIntake = plant.totalWater,
                     onClick = {
-                        viewModel.onEvent(ShopScreenEvent.ShowBuyPlantDialog(plant))
+                        try {
+                            viewModel.onEvent(ShopScreenEvent.ShowBuyPlantDialog(plant))
+                        } catch (_: CurrentlyGrowingPlantException) {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(message = currentlyGrowingPlantMessage)
+                            }
+                        }
                     })
             }
         }

@@ -8,6 +8,7 @@ interface GalleryRepository {
     suspend fun getGrownPlantById(id: String): Plant?
     suspend fun addGrownPlant(plant: Plant)
     suspend fun deleteGrownPlant(plant: Plant)
+    fun getCurrentPlantId(): String?
     suspend fun getCurrentPlant(): Plant?
     suspend fun setCurrentPlant(plant: Plant)
     fun deleteCurrentPlant()
