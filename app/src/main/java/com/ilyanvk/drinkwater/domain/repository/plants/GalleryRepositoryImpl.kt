@@ -4,7 +4,6 @@ import com.ilyanvk.drinkwater.data.datasource.plants.CurrentPlantSharedPreferenc
 import com.ilyanvk.drinkwater.data.datasource.plants.GalleryDao
 import com.ilyanvk.drinkwater.domain.model.Plant
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.transform
 import java.util.UUID
 
 class GalleryRepositoryImpl(
@@ -12,7 +11,7 @@ class GalleryRepositoryImpl(
     private val currentPlantSharedPreferences: CurrentPlantSharedPreferences
 ) : GalleryRepository {
     override fun getGrownPlants(): Flow<List<Plant>> =
-        dao.getGrownPlants().transform { it.filter { plant -> plant.id != getCurrentPlantId() } }
+        dao.getGrownPlants()
 
     override suspend fun getGrownPlantById(id: String): Plant? = dao.getGrownPlantById(id)
 
@@ -29,8 +28,12 @@ class GalleryRepositoryImpl(
 
     override suspend fun setCurrentPlant(plant: Plant) {
         val id = UUID.randomUUID().toString()
-        dao.insertGrownPlant(plant.copy(id = id))
         currentPlantSharedPreferences.setCurrentPlantId(id)
+        updateCurrentPlant(plant.copy(id = id))
+    }
+
+    override suspend fun updateCurrentPlant(plant: Plant) {
+        dao.insertGrownPlant(plant)
     }
 
     override fun deleteCurrentPlant() {

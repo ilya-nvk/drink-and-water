@@ -38,14 +38,18 @@ class TrackerViewModel @Inject constructor(
 
     fun updateGrowingPlant() {
         viewModelScope.launch(Dispatchers.IO) {
-            val plant = galleryRepository.getCurrentPlant()
-            Log.d("TrackerViewModel", "plant: $plant")
-            val userProfile = profileRepository.getUserProfile()
-            withContext(Dispatchers.Main) {
-                _state.value = _state.value.copy(
-                    plant = plant, intakeTodayGoal = calculateDailyIntakeGoal(userProfile)
-                )
-            }
+            updateGrowingPlantState()
+        }
+    }
+
+    private suspend fun updateGrowingPlantState() {
+        val plant = galleryRepository.getCurrentPlant()
+        Log.d("TrackerViewModel", "plant: $plant")
+        val userProfile = profileRepository.getUserProfile()
+        withContext(Dispatchers.Main) {
+            _state.value = _state.value.copy(
+                plant = plant, intakeTodayGoal = calculateDailyIntakeGoal(userProfile)
+            )
         }
     }
 
@@ -61,17 +65,17 @@ class TrackerViewModel @Inject constructor(
                     records = _state.value.records + newRecord
                 )
                 viewModelScope.launch(Dispatchers.IO) {
-                    val currentPlant = galleryRepository.getCurrentPlant()
-                    currentPlant?.let { galleryRepository.setCurrentPlant(it.copy(tookWater = it.tookWater + newRecord.actualIntakeMilliliters)) }
+                    var currentPlant = galleryRepository.getCurrentPlant()
+                    currentPlant?.let { galleryRepository.updateCurrentPlant(it.copy(tookWater = it.tookWater + newRecord.actualIntakeMilliliters)) }
+                    currentPlant = galleryRepository.getCurrentPlant()
                     if (_state.value.intakeToday >= _state.value.intakeTodayGoal) {
                         coinsRepository.addCoins(1)
                     }
-                    if (_state.value.intakeGrow >= _state.value.intakeGrowGoal) {
+                    if (currentPlant?.level == 3) {
                         coinsRepository.addCoins(5)
-                        galleryRepository.getCurrentPlant()
-                            ?.let { galleryRepository.addGrownPlant(it) }
                         galleryRepository.deleteCurrentPlant()
                     }
+                    updateGrowingPlant()
                 }
             }
 

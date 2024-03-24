@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.util.UUID
+import kotlin.math.min
 
 @Entity
 data class Plant(
@@ -23,7 +24,7 @@ data class Plant(
     val totalWater = waterPerLevel * 3
 
     @Ignore
-    val level = tookWater / waterPerLevel
+    val level = min(tookWater / waterPerLevel, 3)
 
     @DrawableRes
     fun getCurrentLevelPictureId(): Int {

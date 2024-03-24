@@ -12,4 +12,5 @@ interface GalleryRepository {
     suspend fun getCurrentPlant(): Plant?
     suspend fun setCurrentPlant(plant: Plant)
     fun deleteCurrentPlant()
+    suspend fun updateCurrentPlant(plant: Plant)
 }

@@ -28,7 +28,8 @@ class GalleryViewModel @Inject constructor(
 
     fun updateData() {
         repository.getGrownPlants().onEach { plants ->
-            _state.value = _state.value.copy(plants = plants)
+            _state.value =
+                _state.value.copy(plants = plants.filter { it.id != repository.getCurrentPlantId() })
         }.launchIn(viewModelScope)
     }
 
