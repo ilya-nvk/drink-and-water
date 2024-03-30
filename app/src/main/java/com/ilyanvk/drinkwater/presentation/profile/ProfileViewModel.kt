@@ -6,18 +6,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.ilyanvk.drinkwater.domain.model.Sex
 import com.ilyanvk.drinkwater.domain.model.UserProfile
+import com.ilyanvk.drinkwater.domain.model.util.ActivityLevel
 import com.ilyanvk.drinkwater.domain.repository.userprofile.UserProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userProfileRepository: UserProfileRepository
+    private val userProfileRepository: UserProfileRepository,
 ) : ViewModel() {
     private val _state = mutableStateOf(
         userProfileToState(
             UserProfile(
-                "Ilya", 1112558400000, 182, 55.0, Sex.MALE
+                "Ilya", 1112558400000, 182, 55.0, Sex.MALE, ActivityLevel.MEDIUM
             )
         )
     )
@@ -55,6 +56,10 @@ class ProfileViewModel @Inject constructor(
                 _state.value = _state.value.copy(weight = event.weight)
             }
 
+            is ProfileScreenEvent.UpdateActivityLevel -> {
+                _state.value = _state.value.copy(activityLevel = event.activityLevel)
+            }
+
             ProfileScreenEvent.ResetProgress -> {
 
             }
@@ -82,7 +87,8 @@ class ProfileViewModel @Inject constructor(
             _state.value.dateOfBirth,
             _state.value.height.toInt(),
             _state.value.weight.toDouble(),
-            _state.value.sex
+            _state.value.sex,
+            _state.value.activityLevel
         )
     }
 
@@ -92,7 +98,8 @@ class ProfileViewModel @Inject constructor(
             userProfile.dateOfBirth,
             userProfile.height.toString(),
             userProfile.weight.toString(),
-            userProfile.sex
+            userProfile.sex,
+            userProfile.activityLevel
         )
     }
 

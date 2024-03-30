@@ -98,4 +98,9 @@
     <string name="apple">Apple</string>
     <string name="cactus">Cactus</string>
     <string name="purple_tulip">Purple tulip</string>
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
+    <string name="activity_level">Activity level</string>
+    <string name="sex">Sex</string>
 </resources>

@@ -3,6 +3,7 @@ package com.ilyanvk.drinkwater.data.datasource.userprofile
 import android.content.Context
 import com.ilyanvk.drinkwater.domain.model.Sex
 import com.ilyanvk.drinkwater.domain.model.UserProfile
+import com.ilyanvk.drinkwater.domain.model.util.ActivityLevel
 
 class UserProfileSharedPreferencesImpl(
     private val context: Context
@@ -15,6 +16,7 @@ class UserProfileSharedPreferencesImpl(
             putInt(KEY_HEIGHT, userProfile.height)
             putFloat(KEY_WEIGHT, userProfile.weight.toFloat())
             putInt(KEY_SEX, userProfile.sex.ordinal)
+            putInt(KEY_ACTIVITY, userProfile.activityLevel.ordinal)
             apply()
         }
     }
@@ -26,7 +28,8 @@ class UserProfileSharedPreferencesImpl(
             prefs.getLong(KEY_DOB, 0),
             prefs.getInt(KEY_HEIGHT, 175),
             prefs.getFloat(KEY_WEIGHT, 50f).toDouble(),
-            Sex.entries[prefs.getInt(KEY_SEX, 0)]
+            Sex.entries[prefs.getInt(KEY_SEX, 0)],
+            ActivityLevel.entries[prefs.getInt(KEY_ACTIVITY, 1)]
         )
     }
 
@@ -37,5 +40,6 @@ class UserProfileSharedPreferencesImpl(
         private const val KEY_HEIGHT = "height"
         private const val KEY_WEIGHT = "weight"
         private const val KEY_SEX = "sex"
+        private const val KEY_ACTIVITY = "activity"
     }
 }

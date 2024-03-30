@@ -1,6 +1,7 @@
 package com.ilyanvk.drinkwater.presentation.profile
 
 import com.ilyanvk.drinkwater.domain.model.Sex
+import com.ilyanvk.drinkwater.domain.model.util.ActivityLevel
 
 data class ProfileScreenState(
     val name: String,
@@ -8,7 +9,8 @@ data class ProfileScreenState(
     val height: String,
     val weight: String,
     val sex: Sex,
-    val showDatePickerDialog: Boolean = false
+    val activityLevel: ActivityLevel = ActivityLevel.MEDIUM,
+    val showDatePickerDialog: Boolean = false,
 ) {
     fun isNameCorrect(): Boolean = name.isNotEmpty()
 
@@ -18,20 +20,20 @@ data class ProfileScreenState(
     }
 
     fun isHeightCorrect(): Boolean {
-        try {
+        return try {
             require(height.toInt() in 50..250)
-            return true
+            true
         } catch (_: Exception) {
-            return false
+            false
         }
     }
 
     fun isWeightCorrect(): Boolean {
-        try {
+        return try {
             require(weight.toDouble() in 1.0..300.0)
-            return true
+            true
         } catch (_: Exception) {
-            return false
+            false
         }
     }
 

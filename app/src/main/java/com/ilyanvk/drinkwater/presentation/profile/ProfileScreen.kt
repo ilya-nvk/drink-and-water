@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MultiChoiceSegmentedButtonRow
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ilyanvk.drinkwater.R
 import com.ilyanvk.drinkwater.domain.model.Sex
+import com.ilyanvk.drinkwater.domain.model.util.ActivityLevel
 import com.ilyanvk.drinkwater.presentation.profile.components.DateOfBirthDialog
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -51,7 +53,6 @@ import java.util.Locale
 fun ProfileScreen(
     modifier: Modifier = Modifier, viewModel: ProfileViewModel = hiltViewModel()
 ) {
-    //viewModel.updateData()
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -94,6 +95,12 @@ fun ProfileScreen(
                     isError = !viewModel.state.value.isNameCorrect()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(R.string.sex),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
                 MultiChoiceSegmentedButtonRow(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
@@ -124,6 +131,68 @@ fun ProfileScreen(
                         )
                     ) {
                         Text(text = stringResource(R.string.female))
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(R.string.activity_level),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                MultiChoiceSegmentedButtonRow(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth(),
+                ) {
+                    SegmentedButton(
+                        checked = viewModel.state.value.activityLevel == ActivityLevel.LOW,
+                        onCheckedChange = {
+                            if (it) {
+                                viewModel.onEvent(
+                                    ProfileScreenEvent.UpdateActivityLevel(
+                                        ActivityLevel.LOW
+                                    )
+                                )
+                            }
+                        },
+                        shape = SegmentedButtonDefaults.baseShape.copy(
+                            topEnd = CornerSize(0.dp), bottomEnd = CornerSize(0.dp)
+                        )
+                    ) {
+                        Text(text = stringResource(id = R.string.low))
+                    }
+                    SegmentedButton(
+                        checked = viewModel.state.value.activityLevel == ActivityLevel.MEDIUM,
+                        onCheckedChange = {
+                            if (it) {
+                                viewModel.onEvent(
+                                    ProfileScreenEvent.UpdateActivityLevel(
+                                        ActivityLevel.MEDIUM
+                                    )
+                                )
+                            }
+                        },
+                        shape = SegmentedButtonDefaults.baseShape.copy(all = CornerSize(0.dp))
+                    ) {
+                        Text(text = stringResource(id = R.string.medium))
+                    }
+                    SegmentedButton(
+                        checked = viewModel.state.value.activityLevel == ActivityLevel.HIGH,
+                        onCheckedChange = {
+                            if (it) {
+                                viewModel.onEvent(
+                                    ProfileScreenEvent.UpdateActivityLevel(
+                                        ActivityLevel.HIGH
+                                    )
+                                )
+                            }
+                        },
+                        shape = SegmentedButtonDefaults.baseShape.copy(
+                            topStart = CornerSize(0.dp), bottomStart = CornerSize(0.dp)
+                        )
+                    ) {
+                        Text(text = stringResource(id = R.string.high))
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))

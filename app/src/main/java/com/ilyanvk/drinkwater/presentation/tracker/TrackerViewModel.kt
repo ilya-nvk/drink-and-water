@@ -6,7 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ilyanvk.drinkwater.domain.model.IntakeRecord
+import com.ilyanvk.drinkwater.domain.model.Sex
 import com.ilyanvk.drinkwater.domain.model.UserProfile
+import com.ilyanvk.drinkwater.domain.model.util.ActivityLevel
 import com.ilyanvk.drinkwater.domain.repository.coins.CoinsRepository
 import com.ilyanvk.drinkwater.domain.repository.intakerecord.IntakeRecordRepository
 import com.ilyanvk.drinkwater.domain.repository.lastlogin.LastLoginRepository
@@ -18,6 +20,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +45,8 @@ class TrackerViewModel @Inject constructor(
         if (lastLoginRepository.isFirstLoginToday()) {
             addCoins(1)
         }
+
+        lastLoginRepository.updateLastLogin()
     }
 
     fun updateGrowingPlant() {
@@ -93,9 +99,9 @@ class TrackerViewModel @Inject constructor(
             }
 
             is TrackerScreenEvent.DeleteRecord -> {
-                _state.value = _state.value.copy(
-                    records = _state.value.records - event.record
-                )
+                viewModelScope.launch(Dispatchers.IO) {
+                    intakeRecordRepository.deleteIntakeRecord(event.record)
+                }
             }
 
             TrackerScreenEvent.HideEarnedCoinsDialog -> {
@@ -119,7 +125,37 @@ class TrackerViewModel @Inject constructor(
     }
 
     private fun calculateDailyIntakeGoal(userProfile: UserProfile): Int {
-        return 1500
+        var baseWaterIntake =
+            if (userProfile.sex == Sex.FEMALE) userProfile.weight * 31 else userProfile.weight * 35
+
+        val age = calculateAge(Date(userProfile.dateOfBirth), Date())
+        baseWaterIntake *= when {
+            age < 30 -> 1.0
+            age < 55 -> 0.95
+            else -> 0.85
+        }
+
+        val activityMultiplier = when (userProfile.activityLevel) {
+            ActivityLevel.LOW -> 1.0
+            ActivityLevel.MEDIUM -> 1.1
+            ActivityLevel.HIGH -> 1.35
+        }
+
+        return (baseWaterIntake * activityMultiplier).toInt()
+    }
+
+    private fun calculateAge(dob: Date, currentDate: Date): Int {
+        val dobCalendar = Calendar.getInstance()
+        dobCalendar.time = dob
+
+        val currentCalendar = Calendar.getInstance()
+        currentCalendar.time = currentDate
+
+        var age = currentCalendar.get(Calendar.YEAR) - dobCalendar.get(Calendar.YEAR)
+        if (currentCalendar.get(Calendar.DAY_OF_YEAR) < dobCalendar.get(Calendar.DAY_OF_YEAR)) {
+            age--
+        }
+        return age
     }
 
     private companion object {
