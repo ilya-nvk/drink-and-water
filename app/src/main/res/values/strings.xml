@@ -95,4 +95,7 @@
     <string name="coins_you_earned">Coins you earned: %1$s</string>
     <string name="your_plant_reached_next_level">Your plant reached next level</string>
     <string name="keep_going">Keep going</string>
+    <string name="apple">Apple</string>
+    <string name="cactus">Cactus</string>
+    <string name="purple_tulip">Purple tulip</string>
 </resources>
