@@ -9,6 +9,7 @@ import com.ilyanvk.drinkwater.domain.model.IntakeRecord
 import com.ilyanvk.drinkwater.domain.model.UserProfile
 import com.ilyanvk.drinkwater.domain.repository.coins.CoinsRepository
 import com.ilyanvk.drinkwater.domain.repository.intakerecord.IntakeRecordRepository
+import com.ilyanvk.drinkwater.domain.repository.lastlogin.LastLoginRepository
 import com.ilyanvk.drinkwater.domain.repository.plants.GalleryRepository
 import com.ilyanvk.drinkwater.domain.repository.userprofile.UserProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,16 +25,22 @@ class TrackerViewModel @Inject constructor(
     private val intakeRecordRepository: IntakeRecordRepository,
     private val profileRepository: UserProfileRepository,
     private val galleryRepository: GalleryRepository,
-    private val coinsRepository: CoinsRepository
+    private val coinsRepository: CoinsRepository,
+    lastLoginRepository: LastLoginRepository
 ) : ViewModel() {
 
     private val _state = mutableStateOf(TrackerScreenState())
     val state: State<TrackerScreenState> = _state
 
     init {
+        Log.d(TAG, "init")
         intakeRecordRepository.getIntakeRecords().onEach {
             _state.value = _state.value.copy(records = it)
         }.launchIn(viewModelScope)
+
+        if (lastLoginRepository.isFirstLoginToday()) {
+            addCoins(1)
+        }
     }
 
     fun updateGrowingPlant() {
@@ -61,19 +68,25 @@ class TrackerViewModel @Inject constructor(
                     intakeMilliliters = event.milliliters,
                     drinkType = event.drinkType
                 )
-                _state.value = _state.value.copy(
-                    records = _state.value.records + newRecord
-                )
                 viewModelScope.launch(Dispatchers.IO) {
-                    var currentPlant = galleryRepository.getCurrentPlant()
+                    intakeRecordRepository.addIntakeRecord(newRecord)
+                    val oldPlant = galleryRepository.getCurrentPlant()
+                    var currentPlant = oldPlant
                     currentPlant?.let { galleryRepository.updateCurrentPlant(it.copy(tookWater = it.tookWater + newRecord.actualIntakeMilliliters)) }
                     currentPlant = galleryRepository.getCurrentPlant()
-                    if (_state.value.intakeToday >= _state.value.intakeTodayGoal) {
-                        coinsRepository.addCoins(1)
-                    }
-                    if (currentPlant?.level == 3) {
-                        coinsRepository.addCoins(5)
+                    if (_state.value.intakeToday >= _state.value.intakeTodayGoal && currentPlant?.level == 3) {
+                        addCoins(6)
                         galleryRepository.deleteCurrentPlant()
+                        _state.value = _state.value.copy(showPlantIsGrownDialog = true)
+                    } else if (_state.value.intakeToday >= _state.value.intakeTodayGoal) {
+                        addCoins(1)
+                    } else if (currentPlant?.level == 3) {
+                        addCoins(5)
+                        galleryRepository.deleteCurrentPlant()
+                        _state.value = _state.value.copy(showPlantIsGrownDialog = true)
+                    }
+                    if ((oldPlant?.level ?: 0) < (currentPlant?.level ?: 0)) {
+                        _state.value = _state.value.copy(showNextLevelPlantDialog = true)
                     }
                     updateGrowingPlant()
                 }
@@ -84,10 +97,32 @@ class TrackerViewModel @Inject constructor(
                     records = _state.value.records - event.record
                 )
             }
+
+            TrackerScreenEvent.HideEarnedCoinsDialog -> {
+                _state.value = _state.value.copy(coinsEarned = null)
+            }
+
+            TrackerScreenEvent.HideNextLevelPlantDialog -> {
+                _state.value = _state.value.copy(showNextLevelPlantDialog = false)
+
+            }
+
+            TrackerScreenEvent.HidePlantGrownDialog -> {
+                _state.value = _state.value.copy(showPlantIsGrownDialog = false)
+            }
         }
+    }
+
+    private fun addCoins(coins: Int) {
+        coinsRepository.addCoins(coins)
+        _state.value = _state.value.copy(coinsEarned = coins)
     }
 
     private fun calculateDailyIntakeGoal(userProfile: UserProfile): Int {
         return 1500
+    }
+
+    private companion object {
+        private const val TAG = "TrackerViewModel"
     }
 }

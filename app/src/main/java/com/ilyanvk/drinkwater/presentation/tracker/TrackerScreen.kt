@@ -43,7 +43,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ilyanvk.drinkwater.R
 import com.ilyanvk.drinkwater.domain.model.IntakeRecord
 import com.ilyanvk.drinkwater.presentation.tracker.components.DeleteRecordDialog
+import com.ilyanvk.drinkwater.presentation.tracker.components.EarnedCoinsDialog
 import com.ilyanvk.drinkwater.presentation.tracker.components.NewRecordDialog
+import com.ilyanvk.drinkwater.presentation.tracker.components.NextLevelPlantDialog
+import com.ilyanvk.drinkwater.presentation.tracker.components.PlantGrownDialog
 import com.ilyanvk.drinkwater.presentation.tracker.components.ProgressComponent
 import com.ilyanvk.drinkwater.presentation.tracker.components.RecordComponent
 import kotlinx.coroutines.launch
@@ -88,6 +91,28 @@ fun TrackerScreen(
 
             }
         }
+    }
+
+    if (state.coinsEarned != null) {
+        EarnedCoinsDialog(
+            onDismiss = { viewModel.onEvent(TrackerScreenEvent.HideEarnedCoinsDialog) },
+            onConfirm = { viewModel.onEvent(TrackerScreenEvent.HideEarnedCoinsDialog) },
+            coins = state.coinsEarned
+        )
+    }
+
+    if (state.showPlantIsGrownDialog) {
+        PlantGrownDialog(
+            onDismiss = { viewModel.onEvent(TrackerScreenEvent.HidePlantGrownDialog) },
+            onConfirm = { viewModel.onEvent(TrackerScreenEvent.HidePlantGrownDialog) }
+        )
+    }
+
+    if (state.showNextLevelPlantDialog) {
+        NextLevelPlantDialog(
+            onDismiss = { viewModel.onEvent(TrackerScreenEvent.HideNextLevelPlantDialog) },
+            onConfirm = { viewModel.onEvent(TrackerScreenEvent.HideNextLevelPlantDialog) }
+        )
     }
 
     Scaffold(modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
@@ -174,25 +199,6 @@ fun TrackerScreen(
                     ),
                     progress = state.intakeToday.toFloat() / state.intakeTodayGoal
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = stringResource(R.string.week_chart),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                        .height(160.dp)
-                        .clip(MaterialTheme.shapes.large)
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                        .padding(top = 8.dp, start = 16.dp, end = 16.dp)
-                ) {
-                    // todo
-                }
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(

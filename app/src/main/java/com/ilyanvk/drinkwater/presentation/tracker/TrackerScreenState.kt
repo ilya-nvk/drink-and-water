@@ -7,7 +7,10 @@ import java.util.Date
 data class TrackerScreenState(
     val plant: Plant? = null,
     val intakeTodayGoal: Int = 0,
-    val records: List<IntakeRecord> = emptyList()
+    val records: List<IntakeRecord> = emptyList(),
+    val coinsEarned: Int? = null,
+    val showPlantIsGrownDialog: Boolean = false,
+    val showNextLevelPlantDialog: Boolean = false
 ) {
     val intakeGrow: Int = plant?.let { it.tookWater % it.waterPerLevel } ?: 0
 

@@ -92,4 +92,7 @@
     <string name="notification_title">Drink some water</string>
     <string name="you_asked_to_remind_you">You asked to remind you</string>
     <string name="you_already_have_a_growing_plant">You already have a growing plant</string>
+    <string name="coins_you_earned">Coins you earned: %1$s</string>
+    <string name="your_plant_reached_next_level">Your plant reached next level</string>
+    <string name="keep_going">Keep going</string>
 </resources>

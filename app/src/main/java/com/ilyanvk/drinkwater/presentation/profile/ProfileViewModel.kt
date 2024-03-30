@@ -1,5 +1,6 @@
 package com.ilyanvk.drinkwater.presentation.profile
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,7 @@ class ProfileViewModel @Inject constructor(
     val state: State<ProfileScreenState> = _state
 
     init {
+        Log.d(TAG, "init")
         updateData()
     }
 
@@ -92,5 +94,10 @@ class ProfileViewModel @Inject constructor(
             userProfile.weight.toString(),
             userProfile.sex
         )
+    }
+
+
+    private companion object {
+        private const val TAG = "ProfileViewModel"
     }
 }

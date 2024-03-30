@@ -1,6 +1,5 @@
 package com.ilyanvk.drinkwater.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -10,9 +9,6 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.ilyanvk.drinkwater.domain.model.Theme
-import com.ilyanvk.drinkwater.presentation.settings.SettingsViewModel
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80, secondary = PurpleGrey80, tertiary = Pink80
@@ -38,35 +34,13 @@ fun DrinkWaterTheme(
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true, content: @Composable () -> Unit
 ) {
-    val settingsViewModel = hiltViewModel<SettingsViewModel>()
-//    val colorScheme = when {
-//        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-//            val context = LocalContext.current
-//            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-//        }
-//
-//        darkTheme -> DarkColorScheme
-//        else -> LightColorScheme
-//    }
-
-
-    val theme = settingsViewModel.state.value.theme
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            if (theme == Theme.SYSTEM) {
-                if (darkTheme) dynamicDarkColorScheme(LocalContext.current as Activity) else dynamicLightColorScheme(
-                    LocalContext.current as Activity
-                )
-            } else {
-                if (theme == Theme.DARK) DarkColorScheme else LightColorScheme
-            }
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        theme == Theme.SYSTEM -> {
-            if (darkTheme) DarkColorScheme else LightColorScheme
-        }
-
-        theme == Theme.DARK -> DarkColorScheme
+        darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 

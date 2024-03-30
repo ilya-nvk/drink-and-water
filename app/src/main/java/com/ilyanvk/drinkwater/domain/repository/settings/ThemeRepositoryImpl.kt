@@ -1,5 +1,6 @@
 package com.ilyanvk.drinkwater.domain.repository.settings
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +12,13 @@ class ThemeRepositoryImpl(
 ) : ThemeRepository {
 
     private val themeLiveData = MutableLiveData(sharedPreferences.getTheme())
+
+    init {
+        Log.d("ThemeRepositoryImpl", "init")
+        themeLiveData.observeForever {
+            Log.d("ThemeRepositoryImpl", "themeLiveData.observeForever")
+        }
+    }
 
     init {
         updateTheme(sharedPreferences.getTheme())

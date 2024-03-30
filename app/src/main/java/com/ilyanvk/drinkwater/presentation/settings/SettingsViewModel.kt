@@ -1,8 +1,8 @@
 package com.ilyanvk.drinkwater.presentation.settings
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ilyanvk.drinkwater.domain.model.Notification
@@ -23,17 +23,12 @@ class SettingsViewModel @Inject constructor(
     private val notificationsRepository: NotificationsRepository,
     private val notificationManager: DrinkNotificationManager
 ) : ViewModel() {
-    private val _state = mutableStateOf(
-        SettingsScreenState(theme = themeRepository.getTheme().value ?: Theme.SYSTEM)
-    )
+    private val _state =
+        mutableStateOf(SettingsScreenState(themeRepository.getTheme().value ?: Theme.SYSTEM))
     val state: State<SettingsScreenState> = _state
 
-    private val themeObserver = Observer<Theme> { theme ->
-        _state.value = _state.value.copy(theme = theme)
-    }
-
     init {
-        themeRepository.getTheme().observeForever(themeObserver)
+        Log.d(TAG, "init")
         notificationsRepository.getNotifications().onEach { notifications ->
             _state.value = _state.value.copy(notifications = notifications)
         }.launchIn(viewModelScope)
@@ -57,6 +52,7 @@ class SettingsViewModel @Inject constructor(
             }
 
             is SettingsEvent.SetTheme -> {
+                Log.d("SettingsViewModel", "SettingsEvent.SetTheme")
                 themeRepository.setTheme(event.theme)
                 _state.value = _state.value.copy(theme = event.theme)
             }
@@ -82,7 +78,8 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        themeRepository.getTheme().removeObserver(themeObserver)
+
+    private companion object {
+        private const val TAG = "SettingsViewModel"
     }
 }

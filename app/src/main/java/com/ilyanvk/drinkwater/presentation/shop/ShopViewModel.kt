@@ -1,5 +1,6 @@
 package com.ilyanvk.drinkwater.presentation.shop
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,7 @@ class ShopViewModel @Inject constructor(
     val state: State<ShopScreenState> = _state
 
     init {
+        Log.d(TAG, "init")
         galleryRepository.getGrownPlants().launchIn(viewModelScope)
     }
 
@@ -66,5 +68,10 @@ class ShopViewModel @Inject constructor(
                 _state.value = _state.value.copy(buyPlantDialog = null)
             }
         }
+    }
+
+
+    private companion object {
+        private const val TAG = "ShopViewModel"
     }
 }

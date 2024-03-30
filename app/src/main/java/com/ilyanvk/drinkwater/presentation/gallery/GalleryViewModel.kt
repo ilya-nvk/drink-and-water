@@ -1,5 +1,6 @@
 package com.ilyanvk.drinkwater.presentation.gallery
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,7 @@ class GalleryViewModel @Inject constructor(
     private var lastDeletedPlants = mutableListOf<Plant>()
 
     init {
+        Log.d(TAG, "init")
         updateData()
     }
 
@@ -59,5 +61,9 @@ class GalleryViewModel @Inject constructor(
                 _state.value = _state.value.copy(deletePlantDialog = null)
             }
         }
+    }
+
+    private companion object {
+        private const val TAG = "GalleryViewModel"
     }
 }

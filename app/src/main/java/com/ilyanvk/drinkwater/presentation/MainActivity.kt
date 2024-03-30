@@ -7,6 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.app.ActivityCompat
 import com.ilyanvk.drinkwater.domain.model.Theme
 import com.ilyanvk.drinkwater.domain.repository.settings.ThemeRepository
@@ -23,19 +25,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        themeRepository.getTheme().observe(this) { theme ->
-            setContent {
-                DrinkWaterTheme(
-                    darkTheme = when (theme) {
-                        Theme.LIGHT -> false
-                        Theme.DARK -> true
-                        Theme.SYSTEM -> isSystemInDarkTheme()
-                        null -> isSystemInDarkTheme()
-                    }
-                ) {
-                    MainScreen()
+        setContent {
+            val theme by themeRepository.getTheme().observeAsState()
+            DrinkWaterTheme(
+                darkTheme = when (theme) {
+                    Theme.LIGHT -> false
+                    Theme.DARK -> true
+                    else -> isSystemInDarkTheme()
                 }
+            ) {
+                MainScreen()
             }
         }
 
