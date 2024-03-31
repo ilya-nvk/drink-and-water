@@ -1,8 +1,7 @@
 package com.ilyanvk.drinkwater.presentation.onboarding
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,8 +29,12 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -52,10 +56,13 @@ fun ProfileRegistrationScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     onButtonClick: () -> Unit
 ) {
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     val snackbarHostState = remember { SnackbarHostState() }
 
     if (viewModel.state.value.showDatePickerDialog) {
+        focusManager.clearFocus()
         DateOfBirthDialog(
             onDismiss = { viewModel.onEvent(ProfileScreenEvent.HideDatePickerDialog) },
             onDateSelected = {
@@ -72,21 +79,31 @@ fun ProfileRegistrationScreen(
     Scaffold(modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
         LargeTopAppBar(
             title = {
-                Text(text = "Create your profile")
+                Text(text = stringResource(R.string.create_your_profile))
             }, scrollBehavior = scrollBehavior
         )
     }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .focusRequester(focusRequester)
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = {
+                        focusManager.clearFocus()
+                    })
+                }) {
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
                 value = viewModel.state.value.name,
                 label = { Text(text = stringResource(R.string.name)) },
                 onValueChange = { viewModel.onEvent(ProfileScreenEvent.UpdateName(it)) },
                 singleLine = true,
-                isError = !viewModel.state.value.isNameCorrect()
+                isError = !viewModel.state.value.isNameCorrect(),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -194,43 +211,49 @@ fun ProfileRegistrationScreen(
                 modifier = Modifier.padding(horizontal = 16.dp)
             ) {
                 OutlinedTextField(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .focusRequester(focusRequester),
                     value = viewModel.state.value.weight,
                     label = { Text(text = stringResource(R.string.weight)) },
                     onValueChange = { viewModel.onEvent(ProfileScreenEvent.UpdateWeight(it)) },
                     singleLine = true,
                     isError = !viewModel.state.value.isWeightCorrect(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 OutlinedTextField(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .focusRequester(focusRequester),
                     value = viewModel.state.value.height,
                     label = { Text(text = stringResource(R.string.height)) },
                     onValueChange = { viewModel.onEvent(ProfileScreenEvent.UpdateHeight(it)) },
                     singleLine = true,
                     isError = !viewModel.state.value.isHeightCorrect(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Box(
+            OutlinedTextField(
                 modifier = Modifier
-                    .clickable { viewModel.onEvent(ProfileScreenEvent.ShowDatePickerDialog) }
-                    .padding(horizontal = 16.dp)
                     .fillMaxWidth()
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .focusProperties { canFocus = false }
-                        .fillMaxWidth(),
-                    value = convertMillisecondsToDate(viewModel.state.value.dateOfBirth),
-                    label = { Text(text = stringResource(R.string.birth_date)) },
-                    onValueChange = { },
-                    singleLine = true,
-                    isError = !viewModel.state.value.isDateOfBirthCorrect()
-                )
-            }
+                    .padding(horizontal = 16.dp)
+                    .focusRequester(focusRequester)
+                    .onFocusChanged { focusState ->
+                        if (focusState.isFocused) {
+                            viewModel.onEvent(ProfileScreenEvent.ShowDatePickerDialog)
+                        }
+                    },
+                value = convertMillisecondsToDate(viewModel.state.value.dateOfBirth),
+                label = { Text(text = stringResource(R.string.birth_date)) },
+                onValueChange = { },
+                singleLine = true,
+                isError = !viewModel.state.value.isDateOfBirthCorrect(),
+                readOnly = true
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier
@@ -242,10 +265,11 @@ fun ProfileRegistrationScreen(
                     onClick = {
                         viewModel.onEvent(ProfileScreenEvent.SaveProfile)
                         onButtonClick()
+                        focusManager.clearFocus()
                     },
                     enabled = viewModel.state.value.isProfileCorrect()
                 ) {
-                    Text(text = stringResource(id = R.string.next))
+                    Text(text = stringResource(R.string.next))
                 }
             }
         }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -126,7 +127,8 @@ fun ProfileScreen(
                     label = { Text(text = stringResource(R.string.name)) },
                     onValueChange = { viewModel.onEvent(ProfileScreenEvent.UpdateName(it)) },
                     singleLine = true,
-                    isError = !viewModel.state.value.isNameCorrect()
+                    isError = !viewModel.state.value.isNameCorrect(),
+                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -242,7 +244,8 @@ fun ProfileScreen(
                         onValueChange = { viewModel.onEvent(ProfileScreenEvent.UpdateWeight(it)) },
                         singleLine = true,
                         isError = !viewModel.state.value.isWeightCorrect(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     OutlinedTextField(
@@ -254,7 +257,8 @@ fun ProfileScreen(
                         onValueChange = { viewModel.onEvent(ProfileScreenEvent.UpdateHeight(it)) },
                         singleLine = true,
                         isError = !viewModel.state.value.isHeightCorrect(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -294,6 +298,7 @@ fun ProfileScreen(
                             coroutineScope.launch {
                                 snackbarHostState.showSnackbar(message = if (viewModel.state.value.isProfileCorrect()) saveSuccessMessage else saveErrorMessage)
                             }
+                            focusManager.clearFocus()
                         },
                         enabled = viewModel.state.value.isProfileCorrect()
                     ) {
