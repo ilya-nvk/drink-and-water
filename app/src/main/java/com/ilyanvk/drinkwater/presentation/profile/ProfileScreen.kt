@@ -1,7 +1,7 @@
 package com.ilyanvk.drinkwater.presentation.profile
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,8 +33,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,6 +60,8 @@ import java.util.Locale
 fun ProfileScreen(
     modifier: Modifier = Modifier, viewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -64,6 +70,7 @@ fun ProfileScreen(
     val progressResetMessage = stringResource(R.string.progress_reset_success)
 
     if (viewModel.state.value.showDatePickerDialog) {
+        focusManager.clearFocus()
         DateOfBirthDialog(
             onDismiss = { viewModel.onEvent(ProfileScreenEvent.HideDatePickerDialog) },
             onDateSelected = {
@@ -76,6 +83,7 @@ fun ProfileScreen(
 
     var showResetProgressDialog by remember { mutableStateOf(false) }
     if (showResetProgressDialog) {
+        focusManager.clearFocus()
         ResetProgressDialog(
             onDismiss = { showResetProgressDialog = false },
             onConfirm = {
@@ -98,13 +106,22 @@ fun ProfileScreen(
             }, scrollBehavior = scrollBehavior
         )
     }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
-        LazyColumn(modifier = Modifier.padding(paddingValues)) {
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+                .focusRequester(focusRequester)
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = {
+                        focusManager.clearFocus()
+                    })
+                }) {
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester),
                     value = viewModel.state.value.name,
                     label = { Text(text = stringResource(R.string.name)) },
                     onValueChange = { viewModel.onEvent(ProfileScreenEvent.UpdateName(it)) },
@@ -217,7 +234,9 @@ fun ProfileScreen(
                     modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     OutlinedTextField(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .focusRequester(focusRequester),
                         value = viewModel.state.value.weight,
                         label = { Text(text = stringResource(R.string.weight)) },
                         onValueChange = { viewModel.onEvent(ProfileScreenEvent.UpdateWeight(it)) },
@@ -227,7 +246,9 @@ fun ProfileScreen(
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     OutlinedTextField(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .focusRequester(focusRequester),
                         value = viewModel.state.value.height,
                         label = { Text(text = stringResource(R.string.height)) },
                         onValueChange = { viewModel.onEvent(ProfileScreenEvent.UpdateHeight(it)) },
@@ -237,27 +258,23 @@ fun ProfileScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                Box(
+                OutlinedTextField(
                     modifier = Modifier
-                        .padding(horizontal = 16.dp)
                         .fillMaxWidth()
-                ) {
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .onFocusChanged { focusState ->
-                                if (focusState.isFocused) {
-                                    viewModel.onEvent(ProfileScreenEvent.ShowDatePickerDialog)
-                                }
-                            },
-                        value = convertMillisecondsToDate(viewModel.state.value.dateOfBirth),
-                        label = { Text(text = stringResource(R.string.birth_date)) },
-                        onValueChange = { },
-                        singleLine = true,
-                        isError = !viewModel.state.value.isDateOfBirthCorrect(),
-                        readOnly = true
-                    )
-                }
+                        .padding(horizontal = 16.dp)
+                        .focusRequester(focusRequester)
+                        .onFocusChanged { focusState ->
+                            if (focusState.isFocused) {
+                                viewModel.onEvent(ProfileScreenEvent.ShowDatePickerDialog)
+                            }
+                        },
+                    value = convertMillisecondsToDate(viewModel.state.value.dateOfBirth),
+                    label = { Text(text = stringResource(R.string.birth_date)) },
+                    onValueChange = { },
+                    singleLine = true,
+                    isError = !viewModel.state.value.isDateOfBirthCorrect(),
+                    readOnly = true
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier
@@ -265,7 +282,10 @@ fun ProfileScreen(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    OutlinedButton(onClick = { showResetProgressDialog = true }) {
+                    OutlinedButton(onClick = {
+                        focusManager.clearFocus()
+                        showResetProgressDialog = true
+                    }) {
                         Text(text = stringResource(R.string.reset_progress))
                     }
                     Button(
