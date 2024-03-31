@@ -21,4 +21,7 @@ interface IntakeRecordDao {
 
     @Delete
     suspend fun deleteIntakeRecord(intakeRecord: IntakeRecord)
+
+    @Query("DELETE FROM intakerecord")
+    suspend fun clear()
 }

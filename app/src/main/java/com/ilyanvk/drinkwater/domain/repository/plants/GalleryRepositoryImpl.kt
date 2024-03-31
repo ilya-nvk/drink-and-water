@@ -36,6 +36,11 @@ class GalleryRepositoryImpl(
         dao.insertGrownPlant(plant)
     }
 
+    override suspend fun clear() {
+        deleteCurrentPlant()
+        dao.clear()
+    }
+
     override fun deleteCurrentPlant() {
         currentPlantSharedPreferences.deleteCurrentPlantId()
     }

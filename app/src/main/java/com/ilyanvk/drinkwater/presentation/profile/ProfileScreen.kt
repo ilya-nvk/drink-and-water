@@ -28,8 +28,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -42,6 +45,7 @@ import com.ilyanvk.drinkwater.R
 import com.ilyanvk.drinkwater.domain.model.Sex
 import com.ilyanvk.drinkwater.domain.model.util.ActivityLevel
 import com.ilyanvk.drinkwater.presentation.profile.components.DateOfBirthDialog
+import com.ilyanvk.drinkwater.presentation.profile.components.ResetProgressDialog
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -71,6 +75,20 @@ fun ProfileScreen(
         )
     }
 
+    var showResetProgressDialog by remember { mutableStateOf(false) }
+    if (showResetProgressDialog) {
+        ResetProgressDialog(
+            onDismiss = { showResetProgressDialog = false },
+            onConfirm = {
+                viewModel.onEvent(ProfileScreenEvent.ResetProgress)
+                showResetProgressDialog = false
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(message = progressResetMessage)
+                }
+            }
+        )
+    }
+
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
@@ -97,7 +115,7 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(R.string.sex),
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -136,7 +154,7 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(R.string.activity_level),
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -244,7 +262,7 @@ fun ProfileScreen(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    OutlinedButton(onClick = { /*TODO*/ }) {
+                    OutlinedButton(onClick = { showResetProgressDialog = true }) {
                         Text(text = stringResource(R.string.reset_progress))
                     }
                     Button(onClick = {

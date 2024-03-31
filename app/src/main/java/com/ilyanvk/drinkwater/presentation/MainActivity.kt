@@ -9,9 +9,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.core.app.ActivityCompat
 import com.ilyanvk.drinkwater.domain.model.Theme
+import com.ilyanvk.drinkwater.domain.repository.lastlogin.LastLoginRepository
 import com.ilyanvk.drinkwater.domain.repository.settings.ThemeRepository
+import com.ilyanvk.drinkwater.presentation.onboarding.OnboardingScreen
 import com.ilyanvk.drinkwater.ui.theme.DrinkWaterTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -21,6 +26,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var themeRepository: ThemeRepository
+
+    @Inject
+    lateinit var lastLoginRepository: LastLoginRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +42,12 @@ class MainActivity : ComponentActivity() {
                     else -> isSystemInDarkTheme()
                 }
             ) {
-                MainScreen()
+                var showOnboarding by remember { mutableStateOf(lastLoginRepository.isTheVeryFirstLogin()) }
+                if (showOnboarding) {
+                    OnboardingScreen(onFinished = { showOnboarding = false })
+                } else {
+                    MainScreen()
+                }
             }
         }
 

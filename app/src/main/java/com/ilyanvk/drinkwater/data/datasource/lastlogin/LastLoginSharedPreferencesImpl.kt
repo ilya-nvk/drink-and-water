@@ -13,9 +13,10 @@ class LastLoginSharedPreferencesImpl(
         }
     }
 
-    override fun getLastLoginTime(): Long {
+    override fun getLastLoginTime(): Long? {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        return prefs.getLong(KEY_LAST_LOGIN_TIME, 0)
+        val lastLoginTime = prefs.getLong(KEY_LAST_LOGIN_TIME, 0)
+        return if (lastLoginTime == 0L) null else lastLoginTime
     }
 
     companion object {

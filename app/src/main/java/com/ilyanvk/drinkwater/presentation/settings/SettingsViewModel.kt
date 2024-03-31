@@ -9,7 +9,6 @@ import com.ilyanvk.drinkwater.domain.model.Notification
 import com.ilyanvk.drinkwater.domain.model.Theme
 import com.ilyanvk.drinkwater.domain.repository.notifications.NotificationsRepository
 import com.ilyanvk.drinkwater.domain.repository.settings.ThemeRepository
-import com.ilyanvk.drinkwater.presentation.notifications.DrinkNotificationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -21,7 +20,6 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val themeRepository: ThemeRepository,
     private val notificationsRepository: NotificationsRepository,
-    private val notificationManager: DrinkNotificationManager
 ) : ViewModel() {
     private val _state =
         mutableStateOf(SettingsScreenState(themeRepository.getTheme().value ?: Theme.SYSTEM))
@@ -38,14 +36,12 @@ class SettingsViewModel @Inject constructor(
         when (event) {
             is SettingsEvent.AddNotification -> {
                 val notification = Notification(time = event.time)
-                notificationManager.setNotification(notification)
                 viewModelScope.launch(Dispatchers.IO) {
                     notificationsRepository.addNotification(notification)
                 }
             }
 
             is SettingsEvent.RemoveNotification -> {
-                notificationManager.cancelNotification(event.notification.id)
                 viewModelScope.launch(Dispatchers.IO) {
                     notificationsRepository.deleteNotification(event.notification)
                 }
@@ -58,10 +54,6 @@ class SettingsViewModel @Inject constructor(
             }
 
             is SettingsEvent.UpdateNotification -> {
-                notificationManager.cancelNotification(event.notification.id)
-                if (event.notification.isActive) {
-                    notificationManager.setNotification(event.notification)
-                }
                 viewModelScope.launch(Dispatchers.IO) {
                     notificationsRepository.updateNotification(event.notification)
                 }

@@ -27,10 +27,13 @@ class NotificationsModule {
     }
 
     @Provides
-    fun provideNotificationsRepository(dao: NotificationsDao): NotificationsRepository =
-        NotificationsRepositoryImpl(dao)
-
-    @Provides
     fun provideDrinkNotificationManager(@ApplicationContext context: Context): DrinkNotificationManager =
         DrinkNotificationManagerImpl(context)
+
+    @Provides
+    fun provideNotificationsRepository(
+        dao: NotificationsDao,
+        notificationManager: DrinkNotificationManager
+    ): NotificationsRepository =
+        NotificationsRepositoryImpl(dao, notificationManager)
 }

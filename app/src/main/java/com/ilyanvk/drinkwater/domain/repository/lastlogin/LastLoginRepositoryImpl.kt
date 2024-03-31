@@ -17,6 +17,10 @@ class LastLoginRepositoryImpl(
             set(Calendar.MILLISECOND, 0)
         }.timeInMillis
 
-        return lastLoginSharedPreferences.getLastLoginTime() < midnightMillis
+        return lastLoginSharedPreferences.getLastLoginTime()?.let { it < midnightMillis } ?: true
+    }
+
+    override fun isTheVeryFirstLogin(): Boolean {
+        return lastLoginSharedPreferences.getLastLoginTime() == null
     }
 }

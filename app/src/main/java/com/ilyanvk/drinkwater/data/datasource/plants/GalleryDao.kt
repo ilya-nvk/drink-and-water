@@ -21,4 +21,7 @@ interface GalleryDao {
 
     @Delete
     suspend fun deleteGrownPlant(plant: Plant)
+
+    @Query("DELETE FROM plant")
+    fun clear()
 }

@@ -8,4 +8,5 @@ interface IntakeRecordRepository {
     suspend fun getIntakeRecordById(id: String): IntakeRecord?
     suspend fun addIntakeRecord(intakeRecord: IntakeRecord)
     suspend fun deleteIntakeRecord(intakeRecord: IntakeRecord)
+    suspend fun clear()
 }

@@ -103,4 +103,9 @@
     <string name="low">Low</string>
     <string name="activity_level">Activity level</string>
     <string name="sex">Sex</string>
+    <string name="reset">Reset</string>
+    <string name="reset_progress_question">Reset progress?</string>
+    <string name="restore_progress_warning">This action will delete all your records and grown plants. You will not be able to restore it</string>
+    <string name="next">Next</string>
+    <string name="finish">Finish</string>
 </resources>

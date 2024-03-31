@@ -17,4 +17,6 @@ class IntakeRecordRepositoryImpl(
 
     override suspend fun deleteIntakeRecord(intakeRecord: IntakeRecord) =
         dao.deleteIntakeRecord(intakeRecord)
+
+    override suspend fun clear() = dao.clear()
 }

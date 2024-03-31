@@ -4,34 +4,31 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.ilyanvk.drinkwater.domain.model.Sex
+import androidx.lifecycle.viewModelScope
 import com.ilyanvk.drinkwater.domain.model.UserProfile
-import com.ilyanvk.drinkwater.domain.model.util.ActivityLevel
+import com.ilyanvk.drinkwater.domain.repository.intakerecord.IntakeRecordRepository
+import com.ilyanvk.drinkwater.domain.repository.notifications.NotificationsRepository
+import com.ilyanvk.drinkwater.domain.repository.plants.GalleryRepository
 import com.ilyanvk.drinkwater.domain.repository.userprofile.UserProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val userProfileRepository: UserProfileRepository,
+    private val intakeRecordRepository: IntakeRecordRepository,
+    private val galleryRepository: GalleryRepository,
+    private val notificationRepository: NotificationsRepository
 ) : ViewModel() {
     private val _state = mutableStateOf(
-        userProfileToState(
-            UserProfile(
-                "Ilya", 1112558400000, 182, 55.0, Sex.MALE, ActivityLevel.MEDIUM
-            )
-        )
+        userProfileToState(userProfileRepository.getUserProfile())
     )
     val state: State<ProfileScreenState> = _state
 
     init {
         Log.d(TAG, "init")
-        updateData()
-    }
-
-    fun updateData() {
-        val userProfile = userProfileRepository.getUserProfile()
-        _state.value = userProfileToState(userProfile)
     }
 
     fun onEvent(event: ProfileScreenEvent) {
@@ -61,12 +58,16 @@ class ProfileViewModel @Inject constructor(
             }
 
             ProfileScreenEvent.ResetProgress -> {
-
+                viewModelScope.launch(Dispatchers.IO) {
+                    intakeRecordRepository.clear()
+                    galleryRepository.clear()
+                    notificationRepository.clear()
+                }
             }
 
             ProfileScreenEvent.SaveProfile -> {
                 userProfileRepository.saveUserProfile(stateToUserProfile())
-                updateData()
+                _state.value = userProfileToState(userProfileRepository.getUserProfile())
             }
 
             ProfileScreenEvent.ShowDatePickerDialog -> {
