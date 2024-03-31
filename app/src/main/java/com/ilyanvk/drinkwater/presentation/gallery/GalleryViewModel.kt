@@ -25,10 +25,6 @@ class GalleryViewModel @Inject constructor(
 
     init {
         Log.d(TAG, "init")
-        updateData()
-    }
-
-    fun updateData() {
         repository.getGrownPlants().onEach { plants ->
             _state.value =
                 _state.value.copy(plants = plants.filter { it.id != repository.getCurrentPlantId() })

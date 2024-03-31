@@ -15,7 +15,7 @@ fun PlantGrownDialog(
 ) {
     AlertDialog(onDismissRequest = { onDismiss() }, confirmButton = {
         Button(onClick = { onConfirm() }) {
-            Text(text = stringResource(R.string.delete))
+            Text(text = stringResource(R.string.ok))
         }
     }, title = {
         Text(text = stringResource(R.string.congratulations))

@@ -13,10 +13,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class GalleryModule {
+
+    @Singleton
     @Provides
     fun provideGalleryDao(
         @ApplicationContext context: Context
@@ -26,11 +29,13 @@ class GalleryModule {
         ).build().dao
     }
 
+    @Singleton
     @Provides
     fun provideCurrentPlantSharedPreferences(
         @ApplicationContext context: Context
     ): CurrentPlantSharedPreferences = CurrentPlantSharedPreferencesImpl(context)
 
+    @Singleton
     @Provides
     fun provideGalleryRepository(
         dao: GalleryDao, currentPlantSharedPreferences: CurrentPlantSharedPreferences

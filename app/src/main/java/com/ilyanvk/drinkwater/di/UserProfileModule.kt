@@ -10,14 +10,18 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class UserProfileModule {
+
+    @Singleton
     @Provides
     fun provideUserProfileSharedPreferences(@ApplicationContext context: Context): UserProfileSharedPreferences =
         UserProfileSharedPreferencesImpl(context)
 
+    @Singleton
     @Provides
     fun provideUserProfileRepository(userProfileSharedPreferences: UserProfileSharedPreferences): UserProfileRepository =
         UserProfileRepositoryImpl(userProfileSharedPreferences)

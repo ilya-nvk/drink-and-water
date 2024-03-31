@@ -40,8 +40,6 @@ import kotlinx.coroutines.launch
 fun GalleryScreen(
     modifier: Modifier = Modifier, viewModel: GalleryViewModel = hiltViewModel()
 ) {
-    viewModel.updateData()
-
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 

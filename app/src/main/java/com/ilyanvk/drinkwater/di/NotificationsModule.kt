@@ -13,10 +13,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class NotificationsModule {
+
+    @Singleton
     @Provides
     fun provideNotificationsDao(
         @ApplicationContext context: Context
@@ -26,10 +29,12 @@ class NotificationsModule {
         ).build().dao
     }
 
+    @Singleton
     @Provides
     fun provideDrinkNotificationManager(@ApplicationContext context: Context): DrinkNotificationManager =
         DrinkNotificationManagerImpl(context)
 
+    @Singleton
     @Provides
     fun provideNotificationsRepository(
         dao: NotificationsDao,
