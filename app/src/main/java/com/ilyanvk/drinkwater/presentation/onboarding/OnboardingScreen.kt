@@ -31,7 +31,7 @@ fun OnboardingScreen(
         ) {
             composable(OnboardingNavigationScreens.Screen1.route) {
                 BaseOnboardingScreen(
-                    picture = painterResource(id = R.drawable.plant_test),
+                    picture = painterResource(id = R.drawable.lady_drinking),
                     title = "Track your daily water intake with us",
                     text = "Achieve your hydration goals with a simple tap!",
                     button = {
@@ -43,7 +43,7 @@ fun OnboardingScreen(
             }
             composable(OnboardingNavigationScreens.Screen2.route) {
                 BaseOnboardingScreen(
-                    picture = painterResource(id = R.drawable.plant_test),
+                    picture = painterResource(id = R.drawable.nature),
                     title = "Keep motivation with plants growing gamification",
                     text = "Drink water and water the plants!\nHow many plants can you grow?",
                     button = {
@@ -55,7 +55,7 @@ fun OnboardingScreen(
             }
             composable(OnboardingNavigationScreens.Screen3.route) {
                 BaseOnboardingScreen(
-                    picture = painterResource(id = R.drawable.plant_test),
+                    picture = painterResource(id = R.drawable.notification_bell),
                     title = "Custom remainders",
                     text = "Quick and easy to set your hydration goal and then track your daily water intake progress.",
                     button = {

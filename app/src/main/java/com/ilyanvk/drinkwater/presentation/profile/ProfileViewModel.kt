@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ilyanvk.drinkwater.domain.model.UserProfile
+import com.ilyanvk.drinkwater.domain.repository.coins.CoinsRepository
 import com.ilyanvk.drinkwater.domain.repository.intakerecord.IntakeRecordRepository
 import com.ilyanvk.drinkwater.domain.repository.notifications.NotificationsRepository
 import com.ilyanvk.drinkwater.domain.repository.plants.GalleryRepository
@@ -20,7 +21,8 @@ class ProfileViewModel @Inject constructor(
     private val userProfileRepository: UserProfileRepository,
     private val intakeRecordRepository: IntakeRecordRepository,
     private val galleryRepository: GalleryRepository,
-    private val notificationRepository: NotificationsRepository
+    private val notificationRepository: NotificationsRepository,
+    private val coinsRepository: CoinsRepository
 ) : ViewModel() {
     private val _state = mutableStateOf(
         userProfileToState(userProfileRepository.getUserProfile())
@@ -62,6 +64,7 @@ class ProfileViewModel @Inject constructor(
                     intakeRecordRepository.clear()
                     galleryRepository.clear()
                     notificationRepository.clear()
+                    coinsRepository.setCoins(0)
                 }
             }
 

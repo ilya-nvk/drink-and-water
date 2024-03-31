@@ -270,7 +270,9 @@ fun ProfileScreen(
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar(message = if (viewModel.state.value.isProfileCorrect()) saveSuccessMessage else saveErrorMessage)
                         }
-                    }) {
+                    },
+                        enabled = viewModel.state.value.isProfileCorrect()
+                    ) {
                         Text(text = stringResource(R.string.save))
                     }
                 }

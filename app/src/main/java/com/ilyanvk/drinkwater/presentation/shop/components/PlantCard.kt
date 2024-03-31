@@ -55,7 +55,13 @@ fun PlantCard(
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = stringResource(R.string.name_price, name, price),
+                        text = if (price != 0) stringResource(
+                            R.string.name_price,
+                            name,
+                            price
+                        ) else stringResource(
+                            R.string.free
+                        ),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onTertiaryContainer
                     )

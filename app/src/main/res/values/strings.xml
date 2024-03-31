@@ -108,4 +108,5 @@
     <string name="restore_progress_warning">This action will delete all your records and grown plants. You will not be able to restore it</string>
     <string name="next">Next</string>
     <string name="finish">Finish</string>
+    <string name="free">Free</string>
 </resources>
