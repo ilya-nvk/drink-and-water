@@ -1,6 +1,5 @@
 package com.ilyanvk.drinkwater.presentation.profile
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -34,7 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -240,19 +239,23 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Box(
                     modifier = Modifier
-                        .clickable { viewModel.onEvent(ProfileScreenEvent.ShowDatePickerDialog) }
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
                 ) {
                     OutlinedTextField(
                         modifier = Modifier
-                            .focusProperties { canFocus = false }
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .onFocusChanged { focusState ->
+                                if (focusState.isFocused) {
+                                    viewModel.onEvent(ProfileScreenEvent.ShowDatePickerDialog)
+                                }
+                            },
                         value = convertMillisecondsToDate(viewModel.state.value.dateOfBirth),
                         label = { Text(text = stringResource(R.string.birth_date)) },
                         onValueChange = { },
                         singleLine = true,
-                        isError = !viewModel.state.value.isDateOfBirthCorrect()
+                        isError = !viewModel.state.value.isDateOfBirthCorrect(),
+                        readOnly = true
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -265,12 +268,13 @@ fun ProfileScreen(
                     OutlinedButton(onClick = { showResetProgressDialog = true }) {
                         Text(text = stringResource(R.string.reset_progress))
                     }
-                    Button(onClick = {
-                        viewModel.onEvent(ProfileScreenEvent.SaveProfile)
-                        coroutineScope.launch {
-                            snackbarHostState.showSnackbar(message = if (viewModel.state.value.isProfileCorrect()) saveSuccessMessage else saveErrorMessage)
-                        }
-                    },
+                    Button(
+                        onClick = {
+                            viewModel.onEvent(ProfileScreenEvent.SaveProfile)
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(message = if (viewModel.state.value.isProfileCorrect()) saveSuccessMessage else saveErrorMessage)
+                            }
+                        },
                         enabled = viewModel.state.value.isProfileCorrect()
                     ) {
                         Text(text = stringResource(R.string.save))

@@ -30,7 +30,7 @@ data class ProfileScreenState(
 
     fun isWeightCorrect(): Boolean {
         return try {
-            require(weight.toDouble() in 1.0..300.0)
+            require(weight.replace(',', '.').toDouble() in 1.0..300.0)
             true
         } catch (_: Exception) {
             false
