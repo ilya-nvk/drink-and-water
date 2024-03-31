@@ -7,11 +7,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.ActivityCompat
 import com.ilyanvk.drinkwater.domain.model.Theme
 import com.ilyanvk.drinkwater.domain.repository.lastlogin.LastLoginRepository
@@ -44,8 +46,10 @@ class MainActivity : ComponentActivity() {
             ) {
                 var showOnboarding by remember { mutableStateOf(lastLoginRepository.isTheVeryFirstLogin()) }
                 if (showOnboarding) {
+                    window.navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
                     OnboardingScreen(onFinished = { showOnboarding = false })
                 } else {
+                    window.navigationBarColor = MaterialTheme.colorScheme.surfaceContainer.toArgb()
                     MainScreen()
                 }
             }

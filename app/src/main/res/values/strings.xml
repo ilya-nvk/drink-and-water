@@ -67,7 +67,7 @@
     <string name="add_notification">Add notification</string>
     <string name="add">Add</string>
     <string name="ok">OK</string>
-    <string name="coins_description">You can get 1 coin every day for entering the app. You can also get 1 more coin for meeting your daily drinking requirement and 5 coins for growing a plant completely. For coins you can buy a plant</string>
+    <string name="coins_description">You can get 1 coin every day for entering the app. You can also get 1 more coin for meeting your daily drinking requirement and 5 coins for growing a plant completely. You can buy a plant for coins</string>
     <string name="you_have_coins">You have %1$s coins</string>
     <string name="save_profile_error">Please fill in all fields correctly</string>
     <string name="save_profile_success">Profile successfully saved</string>
@@ -108,6 +108,6 @@
     <string name="restore_progress_warning">This action will delete all your records and grown plants. You will not be able to restore it</string>
     <string name="next">Next</string>
     <string name="finish">Finish</string>
-    <string name="free">Free</string>
     <string name="create_your_profile">Create your profile</string>
+    <string name="free">%1$s: free</string>
 </resources>

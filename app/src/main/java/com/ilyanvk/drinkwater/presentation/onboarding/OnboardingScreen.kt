@@ -21,7 +21,7 @@ fun OnboardingScreen(
 ) {
     val navController = rememberNavController()
     Scaffold(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         NavHost(
             navController = navController,

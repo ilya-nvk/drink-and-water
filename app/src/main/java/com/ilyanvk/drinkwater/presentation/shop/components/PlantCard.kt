@@ -59,9 +59,7 @@ fun PlantCard(
                             R.string.name_price,
                             name,
                             price
-                        ) else stringResource(
-                            R.string.free
-                        ),
+                        ) else stringResource(R.string.free, name),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onTertiaryContainer
                     )
