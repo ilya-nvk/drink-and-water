@@ -57,7 +57,7 @@ fun OnboardingScreen(
                 BaseOnboardingScreen(
                     picture = painterResource(id = R.drawable.notification_bell),
                     title = "Custom reminders",
-                    text = "Quick and easy to set your hydration goal and then track your daily water intake progress.",
+                    text = "Quick and easy to set your hydration goal and then track your daily water intake progress.\nMake sure that you gave permission to send notifications, you can check it in the system settings.",
                     button = {
                         Button(onClick = { navController.navigate(OnboardingNavigationScreens.Screen4.route) }) {
                             Text(stringResource(R.string.next))
