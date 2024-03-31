@@ -24,10 +24,10 @@ class UserProfileSharedPreferencesImpl(
     override fun getUserProfile(): UserProfile {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return UserProfile(
-            prefs.getString(KEY_NAME, "") ?: "Your name",
-            prefs.getLong(KEY_DOB, 0),
+            prefs.getString(KEY_NAME, "") ?: "",
+            prefs.getLong(KEY_DOB, 946719360000),
             prefs.getInt(KEY_HEIGHT, 175),
-            prefs.getFloat(KEY_WEIGHT, 50f).toDouble(),
+            prefs.getFloat(KEY_WEIGHT, 55f).toDouble(),
             Sex.entries[prefs.getInt(KEY_SEX, 0)],
             ActivityLevel.entries[prefs.getInt(KEY_ACTIVITY, 1)]
         )

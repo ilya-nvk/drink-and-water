@@ -56,8 +56,27 @@ fun OnboardingScreen(
             composable(OnboardingNavigationScreens.Screen3.route) {
                 BaseOnboardingScreen(
                     picture = painterResource(id = R.drawable.notification_bell),
-                    title = "Custom remainders",
+                    title = "Custom reminders",
                     text = "Quick and easy to set your hydration goal and then track your daily water intake progress.",
+                    button = {
+                        Button(onClick = { navController.navigate(OnboardingNavigationScreens.Screen4.route) }) {
+                            Text(stringResource(R.string.next))
+                        }
+                    }
+                )
+            }
+            composable(OnboardingNavigationScreens.Screen4.route) {
+                ProfileRegistrationScreen(onButtonClick = {
+                    navController.navigate(
+                        OnboardingNavigationScreens.Screen5.route
+                    )
+                })
+            }
+            composable(OnboardingNavigationScreens.Screen5.route) {
+                BaseOnboardingScreen(
+                    picture = painterResource(id = R.drawable.coin_image),
+                    title = "Earn coins",
+                    text = stringResource(id = R.string.coins_description),
                     button = {
                         Button(onClick = { onFinished() }) {
                             Text(stringResource(R.string.finish))
