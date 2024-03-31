@@ -24,15 +24,12 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -73,25 +70,23 @@ fun ProfileRegistrationScreen(
         )
     }
 
-    val scrollBehavior =
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-
-    Scaffold(modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
+    Scaffold(modifier = modifier
+        .focusRequester(focusRequester)
+        .pointerInput(Unit) {
+            detectTapGestures(onTap = {
+                focusManager.clearFocus()
+            })
+        }, topBar = {
         LargeTopAppBar(
             title = {
                 Text(text = stringResource(R.string.create_your_profile))
-            }, scrollBehavior = scrollBehavior
+            }
         )
     }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .focusRequester(focusRequester)
-                .pointerInput(Unit) {
-                    detectTapGestures(onTap = {
-                        focusManager.clearFocus()
-                    })
-                }) {
+        ) {
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
                 modifier = Modifier
@@ -119,11 +114,15 @@ fun ProfileRegistrationScreen(
             ) {
                 SegmentedButton(
                     checked = viewModel.state.value.sex == Sex.MALE, onCheckedChange = {
-                        if (it) viewModel.onEvent(
-                            ProfileScreenEvent.UpdateSex(
-                                Sex.MALE
+                        focusManager.clearFocus()
+                        if (it) {
+                            focusManager.clearFocus()
+                            viewModel.onEvent(
+                                ProfileScreenEvent.UpdateSex(
+                                    Sex.MALE
+                                )
                             )
-                        )
+                        }
                     }, shape = SegmentedButtonDefaults.baseShape.copy(
                         topEnd = CornerSize(0.dp), bottomEnd = CornerSize(0.dp)
                     )
@@ -132,11 +131,14 @@ fun ProfileRegistrationScreen(
                 }
                 SegmentedButton(
                     checked = viewModel.state.value.sex == Sex.FEMALE, onCheckedChange = {
-                        if (it) viewModel.onEvent(
-                            ProfileScreenEvent.UpdateSex(
-                                Sex.FEMALE
+                        if (it) {
+                            focusManager.clearFocus()
+                            viewModel.onEvent(
+                                ProfileScreenEvent.UpdateSex(
+                                    Sex.FEMALE
+                                )
                             )
-                        )
+                        }
                     }, shape = SegmentedButtonDefaults.baseShape.copy(
                         topStart = CornerSize(0.dp), bottomStart = CornerSize(0.dp)
                     )
@@ -160,6 +162,7 @@ fun ProfileRegistrationScreen(
                     checked = viewModel.state.value.activityLevel == ActivityLevel.LOW,
                     onCheckedChange = {
                         if (it) {
+                            focusManager.clearFocus()
                             viewModel.onEvent(
                                 ProfileScreenEvent.UpdateActivityLevel(
                                     ActivityLevel.LOW
@@ -177,6 +180,7 @@ fun ProfileRegistrationScreen(
                     checked = viewModel.state.value.activityLevel == ActivityLevel.MEDIUM,
                     onCheckedChange = {
                         if (it) {
+                            focusManager.clearFocus()
                             viewModel.onEvent(
                                 ProfileScreenEvent.UpdateActivityLevel(
                                     ActivityLevel.MEDIUM
@@ -192,6 +196,7 @@ fun ProfileRegistrationScreen(
                     checked = viewModel.state.value.activityLevel == ActivityLevel.HIGH,
                     onCheckedChange = {
                         if (it) {
+                            focusManager.clearFocus()
                             viewModel.onEvent(
                                 ProfileScreenEvent.UpdateActivityLevel(
                                     ActivityLevel.HIGH

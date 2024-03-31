@@ -100,7 +100,14 @@ fun ProfileScreen(
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
-    Scaffold(modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
+    Scaffold(modifier = modifier
+        .nestedScroll(scrollBehavior.nestedScrollConnection)
+        .focusRequester(focusRequester)
+        .pointerInput(Unit) {
+            detectTapGestures(onTap = {
+                focusManager.clearFocus()
+            })
+        }, topBar = {
         LargeTopAppBar(
             title = {
                 Text(text = stringResource(id = R.string.profile))
@@ -111,11 +118,7 @@ fun ProfileScreen(
             modifier = Modifier
                 .padding(paddingValues)
                 .focusRequester(focusRequester)
-                .pointerInput(Unit) {
-                    detectTapGestures(onTap = {
-                        focusManager.clearFocus()
-                    })
-                }) {
+        ) {
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
@@ -144,11 +147,14 @@ fun ProfileScreen(
                 ) {
                     SegmentedButton(
                         checked = viewModel.state.value.sex == Sex.MALE, onCheckedChange = {
-                            if (it) viewModel.onEvent(
-                                ProfileScreenEvent.UpdateSex(
-                                    Sex.MALE
+                            if (it) {
+                                focusManager.clearFocus()
+                                viewModel.onEvent(
+                                    ProfileScreenEvent.UpdateSex(
+                                        Sex.MALE
+                                    )
                                 )
-                            )
+                            }
                         }, shape = SegmentedButtonDefaults.baseShape.copy(
                             topEnd = CornerSize(0.dp), bottomEnd = CornerSize(0.dp)
                         )
@@ -157,11 +163,14 @@ fun ProfileScreen(
                     }
                     SegmentedButton(
                         checked = viewModel.state.value.sex == Sex.FEMALE, onCheckedChange = {
-                            if (it) viewModel.onEvent(
-                                ProfileScreenEvent.UpdateSex(
-                                    Sex.FEMALE
+                            if (it) {
+                                focusManager.clearFocus()
+                                viewModel.onEvent(
+                                    ProfileScreenEvent.UpdateSex(
+                                        Sex.FEMALE
+                                    )
                                 )
-                            )
+                            }
                         }, shape = SegmentedButtonDefaults.baseShape.copy(
                             topStart = CornerSize(0.dp), bottomStart = CornerSize(0.dp)
                         )
@@ -185,6 +194,7 @@ fun ProfileScreen(
                         checked = viewModel.state.value.activityLevel == ActivityLevel.LOW,
                         onCheckedChange = {
                             if (it) {
+                                focusManager.clearFocus()
                                 viewModel.onEvent(
                                     ProfileScreenEvent.UpdateActivityLevel(
                                         ActivityLevel.LOW
@@ -202,6 +212,7 @@ fun ProfileScreen(
                         checked = viewModel.state.value.activityLevel == ActivityLevel.MEDIUM,
                         onCheckedChange = {
                             if (it) {
+                                focusManager.clearFocus()
                                 viewModel.onEvent(
                                     ProfileScreenEvent.UpdateActivityLevel(
                                         ActivityLevel.MEDIUM
@@ -217,6 +228,7 @@ fun ProfileScreen(
                         checked = viewModel.state.value.activityLevel == ActivityLevel.HIGH,
                         onCheckedChange = {
                             if (it) {
+                                focusManager.clearFocus()
                                 viewModel.onEvent(
                                     ProfileScreenEvent.UpdateActivityLevel(
                                         ActivityLevel.HIGH

@@ -51,13 +51,6 @@ fun BottomNavigationBar(
                         painter = painterResource(id = item.iconId),
                         contentDescription = stringResource(id = item.titleId),
                     )
-                },
-                label = {
-//                    Text(
-//                        stringResource(id = item.titleId),
-//                        style = MaterialTheme.typography.labelMedium,
-//                        modifier = Modifier.wrapContentWidth()
-//                    )
                 })
             Spacer(modifier = Modifier.width(8.dp))
         }

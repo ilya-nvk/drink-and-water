@@ -32,8 +32,8 @@ fun OnboardingScreen(
             composable(OnboardingNavigationScreens.Screen1.route) {
                 BaseOnboardingScreen(
                     picture = painterResource(id = R.drawable.lady_drinking),
-                    title = "Track your daily water intake with us",
-                    text = "Achieve your hydration goals with a simple tap!",
+                    title = stringResource(R.string.onboarding_welcome_title),
+                    text = stringResource(R.string.onboarding_welcome_text),
                     button = {
                         Button(onClick = { navController.navigate(OnboardingNavigationScreens.Screen2.route) }) {
                             Text(stringResource(R.string.next))
@@ -44,8 +44,8 @@ fun OnboardingScreen(
             composable(OnboardingNavigationScreens.Screen2.route) {
                 BaseOnboardingScreen(
                     picture = painterResource(id = R.drawable.nature),
-                    title = "Keep motivation with plants growing gamification",
-                    text = "Drink water and water the plants!\nHow many plants can you grow?",
+                    title = stringResource(R.string.onboarding_gamification_title),
+                    text = stringResource(R.string.onboarding_gamification_text),
                     button = {
                         Button(onClick = { navController.navigate(OnboardingNavigationScreens.Screen3.route) }) {
                             Text(stringResource(R.string.next))
@@ -56,8 +56,8 @@ fun OnboardingScreen(
             composable(OnboardingNavigationScreens.Screen3.route) {
                 BaseOnboardingScreen(
                     picture = painterResource(id = R.drawable.notification_bell),
-                    title = "Custom reminders",
-                    text = "Quick and easy to set your hydration goal and then track your daily water intake progress.\nMake sure that you gave permission to send notifications, you can check it in the system settings.",
+                    title = stringResource(R.string.onboarding_reminders_title),
+                    text = stringResource(R.string.onboarding_reminders_text),
                     button = {
                         Button(onClick = { navController.navigate(OnboardingNavigationScreens.Screen4.route) }) {
                             Text(stringResource(R.string.next))
@@ -75,7 +75,7 @@ fun OnboardingScreen(
             composable(OnboardingNavigationScreens.Screen5.route) {
                 BaseOnboardingScreen(
                     picture = painterResource(id = R.drawable.coin_image),
-                    title = "Earn coins",
+                    title = stringResource(R.string.onboarding_coins_title),
                     text = stringResource(id = R.string.coins_description),
                     button = {
                         Button(onClick = { onFinished() }) {

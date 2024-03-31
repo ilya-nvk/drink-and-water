@@ -85,12 +85,12 @@ class ProfileViewModel @Inject constructor(
 
     @Throws(IllegalArgumentException::class)
     private fun stateToUserProfile(): UserProfile {
-        require(_state.value.isNameCorrect() && _state.value.isDateOfBirthCorrect() && _state.value.isWeightCorrect() && _state.value.isHeightCorrect())
+        require(_state.value.isProfileCorrect())
         return UserProfile(
             _state.value.name,
             _state.value.dateOfBirth,
             _state.value.height.toInt(),
-            _state.value.weight.toDouble(),
+            _state.value.weight.replace(',', '.').toDouble(),
             _state.value.sex,
             _state.value.activityLevel
         )
@@ -101,7 +101,7 @@ class ProfileViewModel @Inject constructor(
             userProfile.name,
             userProfile.dateOfBirth,
             userProfile.height.toString(),
-            userProfile.weight.toString(),
+            String.format("%.1f", userProfile.weight),
             userProfile.sex,
             userProfile.activityLevel
         )

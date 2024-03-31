@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Drink&amp;Water</string>
+    <string name="app_name" translatable="false">Drink&amp;Water</string>
     <string name="shop">Shop</string>
     <string name="gallery">Gallery</string>
     <string name="tracker">Tracker</string>
@@ -8,7 +8,6 @@
     <string name="today">Today</string>
     <string name="ml_until_next_level">%1$s ml until next level</string>
     <string name="ml_left_today">%1$s ml left today</string>
-    <string name="week_chart">Week chart</string>
     <string name="today_s_records">Today\'s records</string>
     <string name="new_record">New record</string>
     <string name="record_header">%1$s %2$s ml</string>
@@ -27,27 +26,6 @@
     <string name="female">Female</string>
     <string name="reset_progress">Reset progress</string>
     <string name="save">Save</string>
-    <string name="dandelion">Dandelion</string>
-    <string name="rose">Rose</string>
-    <string name="tulip">Tulip</string>
-    <string name="snapdragon">Snapdragon</string>
-    <string name="chrysanthemum">Chrysanthemum</string>
-    <string name="iris">Iris</string>
-    <string name="azalea">Azalea</string>
-    <string name="carnation">Carnation</string>
-    <string name="geranium">Geranium</string>
-    <string name="hibiscus">Hibiscus</string>
-    <string name="poinsettia">Poinsettia</string>
-    <string name="hydrangea">Hydrangea</string>
-    <string name="marigold">Marigold</string>
-    <string name="daffodil">Daffodil</string>
-    <string name="peony">Peony</string>
-    <string name="jasmine">Jasmine</string>
-    <string name="lavender">Lavender</string>
-    <string name="daisy">Daisy</string>
-    <string name="lily">Lily</string>
-    <string name="orchid">Orchid</string>
-    <string name="sunflower">Sunflower</string>
     <string name="name_price">%1$s: %2$s coins</string>
     <string name="needs_ml_to_grow">Needs %1$s ml to grow</string>
     <string name="coins">Coins</string>
@@ -67,7 +45,7 @@
     <string name="add_notification">Add notification</string>
     <string name="add">Add</string>
     <string name="ok">OK</string>
-    <string name="coins_description">You can get 1 coin every day for entering the app. You can also get 1 more coin for meeting your daily drinking requirement and 5 coins for growing a plant completely. You can buy a plant for coins</string>
+    <string name="coins_description">Every day you receive 1 coin for logging into the app. Additionally, you get another 1 coin for meeting your daily liquid intake requirement and 5 coins for fully growing a plant. Coins can be used to purchase plants</string>
     <string name="you_have_coins">You have %1$s coins</string>
     <string name="save_profile_error">Please fill in all fields correctly</string>
     <string name="save_profile_success">Profile successfully saved</string>
@@ -110,4 +88,12 @@
     <string name="finish">Finish</string>
     <string name="create_your_profile">Create your profile</string>
     <string name="free">%1$s: free</string>
+    <string name="onboarding_welcome_title">Track your daily water intake with us</string>
+    <string name="onboarding_welcome_text">Achieve your hydration goals with a simple tap!</string>
+    <string name="onboarding_gamification_title">Keep motivation with plants growing gamification</string>
+    <string name="onboarding_gamification_text">Drink water and water the plants!\nHow many plants can you grow?</string>
+    <string name="onboarding_reminders_title">Custom reminders</string>
+    <string name="onboarding_reminders_text">Quick and easy to set your hydration goal and then track your daily water intake progress.\nMake sure that you gave permission to send notifications, you can check it in the system settings.</string>
+    <string name="onboarding_coins_title">Earn coins</string>
+    <string name="your_plants">Your plants</string>
 </resources>

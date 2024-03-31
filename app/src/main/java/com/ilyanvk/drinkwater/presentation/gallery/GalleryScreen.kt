@@ -86,7 +86,7 @@ fun GalleryScreen(
                 Spacer(modifier = modifier.height(8.dp))
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = "Your plants",
+                    text = stringResource(R.string.your_plants),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = modifier.height(8.dp))
