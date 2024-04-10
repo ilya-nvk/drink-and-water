@@ -45,7 +45,7 @@
     <string name="add_notification">Add notification</string>
     <string name="add">Add</string>
     <string name="ok">OK</string>
-    <string name="coins_description">Every day you receive 1 coin for logging into the app. Additionally, you get another 1 coin for meeting your daily liquid intake requirement and 5 coins for fully growing a plant. Coins can be used to purchase plants</string>
+    <string name="coins_description">Every day you receive 50 coin for logging into the app. Additionally, you get another 100 coins for meeting your daily liquid intake requirement and coins for fully growing a plant: 150% of its price. Coins can be used to purchase plants</string>
     <string name="you_have_coins">You have %1$s coins</string>
     <string name="save_profile_error">Please fill in all fields correctly</string>
     <string name="save_profile_success">Profile successfully saved</string>
@@ -96,4 +96,5 @@
     <string name="onboarding_reminders_text">Quick and easy to set your hydration goal and then track your daily water intake progress.\nMake sure that you gave permission to send notifications, you can check it in the system settings.</string>
     <string name="onboarding_coins_title">Earn coins</string>
     <string name="your_plants">Your plants</string>
+    <string name="red_tulip">Red tulip</string>
 </resources>

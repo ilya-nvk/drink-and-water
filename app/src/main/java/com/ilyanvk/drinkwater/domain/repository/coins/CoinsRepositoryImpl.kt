@@ -16,5 +16,5 @@ class CoinsRepositoryImpl(
 
     override fun setCoins(coins: Int) = coinsSharedPreferences.setCoins(coins)
 
-    override fun resetCoins() = coinsSharedPreferences.setCoins(0)
+    override fun resetCoins() = coinsSharedPreferences.setCoins(50)
 }

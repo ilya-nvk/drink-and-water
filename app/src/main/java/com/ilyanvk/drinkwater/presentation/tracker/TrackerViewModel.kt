@@ -23,6 +23,7 @@ import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class TrackerViewModel @Inject constructor(
@@ -43,7 +44,7 @@ class TrackerViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         if (lastLoginRepository.isFirstLoginToday()) {
-            addCoins(1)
+            addCoins(50)
         }
 
         lastLoginRepository.updateLastLogin()
@@ -75,19 +76,21 @@ class TrackerViewModel @Inject constructor(
                     drinkType = event.drinkType
                 )
                 viewModelScope.launch(Dispatchers.IO) {
+                    val intakeTodayGoal = _state.value.intakeTodayGoal
+                    val oldState = _state.value
                     intakeRecordRepository.addIntakeRecord(newRecord)
                     val oldPlant = galleryRepository.getCurrentPlant()
                     var currentPlant = oldPlant
                     currentPlant?.let { galleryRepository.updateCurrentPlant(it.copy(tookWater = it.tookWater + newRecord.actualIntakeMilliliters)) }
                     currentPlant = galleryRepository.getCurrentPlant()
-                    if (_state.value.intakeToday >= _state.value.intakeTodayGoal && currentPlant?.level == 3) {
-                        addCoins(6)
+                    if (oldState.intakeToday < intakeTodayGoal && _state.value.intakeToday >= intakeTodayGoal && currentPlant?.level == 3) {
+                        addCoins((currentPlant.price * 1.5 + 100).roundToInt())
                         galleryRepository.deleteCurrentPlant()
                         _state.value = _state.value.copy(showPlantIsGrownDialog = true)
-                    } else if (_state.value.intakeToday >= _state.value.intakeTodayGoal) {
-                        addCoins(1)
+                    } else if (oldState.intakeToday < intakeTodayGoal && _state.value.intakeToday >= intakeTodayGoal) {
+                        addCoins(100)
                     } else if (currentPlant?.level == 3) {
-                        addCoins(5)
+                        addCoins((currentPlant.price * 1.5).roundToInt())
                         galleryRepository.deleteCurrentPlant()
                         _state.value = _state.value.copy(showPlantIsGrownDialog = true)
                     }

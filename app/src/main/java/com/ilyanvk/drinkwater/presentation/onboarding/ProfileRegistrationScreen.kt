@@ -274,7 +274,7 @@ fun ProfileRegistrationScreen(
                     },
                     enabled = viewModel.state.value.isProfileCorrect()
                 ) {
-                    Text(text = stringResource(R.string.next))
+                    Text(text = stringResource(R.string.finish))
                 }
             }
         }

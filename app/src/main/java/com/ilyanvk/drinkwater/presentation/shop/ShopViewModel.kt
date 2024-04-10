@@ -11,6 +11,7 @@ import com.ilyanvk.drinkwater.domain.repository.plants.ShopRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +31,11 @@ class ShopViewModel @Inject constructor(
 
     init {
         Log.d(TAG, "init")
-        galleryRepository.getGrownPlants().launchIn(viewModelScope)
+        galleryRepository.getGrownPlants().onEach { updateCoins() }.launchIn(viewModelScope)
+    }
+
+    fun updateCoins() {
+        _state.value = _state.value.copy(coins = coinsRepository.getCoins())
     }
 
     fun onEvent(event: ShopScreenEvent) {

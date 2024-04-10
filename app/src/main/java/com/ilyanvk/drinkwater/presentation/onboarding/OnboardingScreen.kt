@@ -67,22 +67,8 @@ fun OnboardingScreen(
             }
             composable(OnboardingNavigationScreens.Screen4.route) {
                 ProfileRegistrationScreen(onButtonClick = {
-                    navController.navigate(
-                        OnboardingNavigationScreens.Screen5.route
-                    )
+                    onFinished()
                 })
-            }
-            composable(OnboardingNavigationScreens.Screen5.route) {
-                BaseOnboardingScreen(
-                    picture = painterResource(id = R.drawable.coin_image),
-                    title = stringResource(R.string.onboarding_coins_title),
-                    text = stringResource(id = R.string.coins_description),
-                    button = {
-                        Button(onClick = { onFinished() }) {
-                            Text(stringResource(R.string.finish))
-                        }
-                    }
-                )
             }
         }
     }

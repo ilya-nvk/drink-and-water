@@ -60,11 +60,11 @@ class ProfileViewModel @Inject constructor(
             }
 
             ProfileScreenEvent.ResetProgress -> {
+                coinsRepository.resetCoins()
                 viewModelScope.launch(Dispatchers.IO) {
                     intakeRecordRepository.clear()
                     galleryRepository.clear()
                     notificationRepository.clear()
-                    coinsRepository.setCoins(0)
                 }
             }
 

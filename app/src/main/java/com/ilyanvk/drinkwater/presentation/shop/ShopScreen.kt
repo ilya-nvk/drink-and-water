@@ -44,6 +44,8 @@ import kotlinx.coroutines.launch
 fun ShopScreen(
     modifier: Modifier = Modifier, viewModel: ShopViewModel = hiltViewModel()
 ) {
+    viewModel.updateCoins()
+
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val plantBoughtMessage = stringResource(R.string.you_bought_a_plant)
