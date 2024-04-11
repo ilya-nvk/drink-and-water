@@ -97,4 +97,7 @@
     <string name="onboarding_coins_title">Зарабатывайте монеты</string>
     <string name="your_plants">Ваши растения</string>
     <string name="red_tulip">Красный тюльпан</string>
+    <string name="beer">Пиво</string>
+    <string name="wine">Вино</string>
+    <string name="champaign">Шампанское</string>
 </resources>

@@ -20,6 +20,8 @@ internal fun DrinkType.toStringRes(): Int {
         DrinkType.SODA -> R.string.soda
         DrinkType.JUICE -> R.string.juice
         DrinkType.MILK -> R.string.milk
-        DrinkType.ALCOHOL -> R.string.alcohol
+        DrinkType.BEER -> R.string.beer
+        DrinkType.WINE -> R.string.wine
+        DrinkType.CHAMPAIGN -> R.string.champaign
     }
 }

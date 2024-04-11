@@ -97,4 +97,7 @@
     <string name="onboarding_coins_title">Earn coins</string>
     <string name="your_plants">Your plants</string>
     <string name="red_tulip">Red tulip</string>
+    <string name="beer">Beer</string>
+    <string name="wine">Wine</string>
+    <string name="champaign">Champaign</string>
 </resources>
